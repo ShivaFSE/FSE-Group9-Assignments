@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>PASSWORD GENERATOR APP</title>
+    <link rel="stylesheet" href="Question2Style.css" />
+    <script src="Question2.js" defer></script>
+  </head>
+  <body>
+    <form id="passwordGeneratorForm">
+      <div class="container">
+        <h2>Password Generator Webpage</h2>
+        <div class="result__container">
+          <span id="result"></span>
+          <button id="copy">Copy</button>
+        </div>
+        <div class="options">
+          <div class="option">
+            <label>Length</label>
+            1<input type="range" id="length" min="1" max="25" value="6">25
+          </div>
+          <label>Characters</label>
+          <div class="option">
+            <input type="checkbox" id="uppercase" checked>
+            <label>A-Z</label>
+          </div>
+          <div class="option">
+            <input type="checkbox" id="numbers" checked>
+            <label>0-9</label>        
+          </div>
+          <div class="option">
+            <input type="checkbox" id="symbols" checked>
+            <label>%@#</label>        
+          </div>
+        </div>
+        <button class="btn" id="generate" type="submit">Generate Password</button>
+      </div>
+    </form>
+  </body>
+</html>
