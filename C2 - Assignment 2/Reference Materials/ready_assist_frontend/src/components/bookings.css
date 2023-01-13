@@ -1,0 +1,20 @@
+.bookingslist {
+    padding-left: 3em;
+    padding-right: 3em;
+    margin-top: 3em;
+    width:200px;
+    display: flex;
+    flex-direction: column;
+    
+  }
+  
+thead {color:green; background-color:blanchedalmond}
+tbody {color:blue; background-color:rgb(205, 228, 255)}
+tfoot {color:red; background-color:blanchedalmond}
+
+ th, td {
+  border: 1px solid black;
+}
+td, th{
+  padding: 5px;
+}
