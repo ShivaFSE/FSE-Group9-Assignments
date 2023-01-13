@@ -1,25 +1,52 @@
-import logo from './logo.svg';
 import './App.css';
+import React from 'react';
+import { Route, BrowserRouter } from "react-router-dom";
+import Home from './components/Home';
+import Login from './components/Login.js';
+import Registration from "./components/Registration";
+import UnderDevelopment from "./components/UnderDevelopment";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+     
+    }
+  }
+
+  render() {
+    return (
+      <div className="container">
+        <h1 className='App-header title'>Railman</h1>
+        <nav className="site-nav">
+            <ul className="mainnav" >
+              <li ><a href="/Home">Home</a></li>
+              <li  ><a href="/">Login</a></li>
+              <li  ><a href="/UnderDevelopment">About</a></li>
+              <li  ><a href="/UnderDevelopment">Services</a></li>
+              <li  ><a href="/UnderDevelopment">Menu</a></li>
+              <li  ><a href="/UnderDevelopment">Order</a></li>
+              <li  ><a href="/UnderDevelopment">Contact</a></li>
+            </ul>
+          </nav>
+        <div className='App-body'>
+          <BrowserRouter>
+              <Route path="/home" component={Home} />
+              <Route path="/" exact component={() => <Login />} />
+              <Route path="/registration" component={Registration} />
+              <Route path="/UnderDevelopment" component={UnderDevelopment} />
+          </BrowserRouter>
+        </div>
+
+        <div className='App-footer'>
+          {/* <Contact /> */}
+        </div>
+
+      </div>
+    );
+  }
 }
+
 
 export default App;

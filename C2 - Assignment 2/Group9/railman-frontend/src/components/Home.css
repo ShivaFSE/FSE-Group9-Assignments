@@ -1,0 +1,37 @@
+.home__container{
+  margin: 50px 0 0 20px;
+  height: calc(100vh - 3rem);
+  align-content: center;
+  display:flex; 
+  flex-direction:row;
+}
+
+.home__title{
+  font-size: 2.25rem;
+  color: #069C54;
+  margin-bottom: .5rem;
+}
+
+.home__subtitle{
+  font-size: 1.5rem;;
+  color: #393939;
+  margin-bottom: 2rem;;
+}
+
+.home__img{
+  width: 300px;
+  justify-self: center;
+}
+
+.button{
+  display: inline-block;
+  background-color: #069C54;
+  color: #FFF;
+  padding: .75rem 1rem;
+  border-radius: .5rem;
+  transition: .3s;
+}
+
+.button:hover{
+  background-color: #048654;
+}
