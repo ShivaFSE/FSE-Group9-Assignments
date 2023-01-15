@@ -5,6 +5,8 @@ import Home from './components/Home';
 import Login from './components/Login.js';
 import Registration from "./components/Registration";
 import UnderDevelopment from "./components/UnderDevelopment";
+import DashboardC from './components/DashboardC';
+import Orders from './components/Orders';
 
 class App extends React.Component {
 
@@ -23,11 +25,11 @@ class App extends React.Component {
             <ul className="mainnav" >
               <li ><a href="/Home">Home</a></li>
               <li  ><a href="/">Login</a></li>
-              <li  ><a href="/UnderDevelopment">About</a></li>
-              <li  ><a href="/UnderDevelopment">Services</a></li>
               <li  ><a href="/UnderDevelopment">Menu</a></li>
-              <li  ><a href="/UnderDevelopment">Order</a></li>
+              <li  ><a href="/Orders">Orders</a></li>
+              <li  ><a href="/UnderDevelopment">Services</a></li>
               <li  ><a href="/UnderDevelopment">Contact</a></li>
+              <li  ><a href="/UnderDevelopment">About</a></li>
             </ul>
           </nav>
         <div className='App-body'>
@@ -36,6 +38,8 @@ class App extends React.Component {
               <Route path="/" exact component={() => <Login />} />
               <Route path="/registration" component={Registration} />
               <Route path="/UnderDevelopment" component={UnderDevelopment} />
+              <Route path="/DashboardC" exact component={() => <DashboardC />} />
+              <Route path="/Orders" exact component={() => <Orders />} />
           </BrowserRouter>
         </div>
 

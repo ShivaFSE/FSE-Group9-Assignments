@@ -1,28 +1,6 @@
 {
   "registration": [
-    {
-      "name": "Shiva",
-      "email": "c@g.com",
-      "password": "check1",
-      "phone": "1234567890",
-      "address": "Address",
-      "city": "City",
-      "role": "customer",
-      "pincode": "000000",
-      "apiId": "authentication",
-      "id": 1
-    },
-    {
-      "name": "Owner",
-      "email": "o@g.com",
-      "password": "check1",
-      "phone": "1234567890",
-      "address": "Address",
-      "city": "City",
-      "role": "restaurent_owner",
-      "pincode": "000000",
-      "apiId": "authentication",
-      "id": 2
-    }
+  ],
+  "orders": [
   ]
 }

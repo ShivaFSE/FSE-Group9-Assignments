@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { setUserSession } from './Common';
+import { isUserLoggedIn, getUser, setUserSession } from './Common';
 import './Login.css';
 import { FormErrors } from './FormErrors';
 import axios from 'axios';
@@ -90,14 +90,12 @@ class Login extends React.Component {
           console.log("Login successfull");
 
           if (payload.role === "customer") {
-            self.props.history.push('/dashboardC');          
+            self.props.history.push('/DashboardC');          
           }
           else
             if (payload.role === "restaurent_owner") {
-              self.props.history.push('/dashboardE');
+              self.props.history.push('/DashboardO');
             }
-
-         
         }
         else if (response.data.code === 204) {
           console.log("emailid and pwd  do not match");
@@ -116,12 +114,22 @@ class Login extends React.Component {
   }
 
   render() {
+    console.log("In Login.js " + getUser().id + ", " + getUser().name + ", " + getUser().address);
+    if(isUserLoggedIn()) {
+      console.log("User is " + getUser().name);
+      return (<div className="loginContainer">
+        {this.props.history.push('/DashboardC')}
+      </div>)
+    }
+    else {
+      console.log("User is not logged in");
+    }
+
     return (
       <div className="loginContainer">
         <div className="login-menu">
           <form className="demoForm" onSubmit={this.handleSubmit}>
          
-
             <div >
               <input type="email" required name="email"
                 placeholder="Email"
