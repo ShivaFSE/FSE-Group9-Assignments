@@ -49,7 +49,7 @@ class Orders extends React.Component {
         <div className="Greeting">
           <h3>Welcome {user.name} !</h3>
         </div>
-        {(this.state.tableData.length > 0) ? this.addOrdersTable() : null}
+        {(this.state.tableData.length > 0) ? this.addOrdersTable() : <h2 className='orders-heading'>No Orders!</h2>}
         <div className="search-container">
           <fieldset>
             <legend>Order Food</legend>
