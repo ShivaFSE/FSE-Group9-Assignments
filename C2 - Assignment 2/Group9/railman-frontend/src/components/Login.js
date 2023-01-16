@@ -73,15 +73,15 @@ class Login extends React.Component {
   handleSubmit = (e) => {
     var apiBaseUrl = "http://localhost:8000/api/authentication/";
     var self = this;
-    var payload = {
-      "email": this.state.email,
-      "password": this.state.password,
-      "role": this.state.UserType
-    }
 
     // Revert back to post method when Backend is built
+    // var payload = {
+    //   "email": this.state.email,
+    //   "password": this.state.password,
+    //   "role": this.state.UserType
+    // }
     // axios.post(apiBaseUrl + 'login', payload)
-    axios.get(apiBaseUrl + 'registration' + '?email=' + this.state.email + "&password=" + this.state.password + "&role=" + this.state.UserType)
+    axios.get(apiBaseUrl + 'registration?email=' + this.state.email + "&password=" + this.state.password + "&role=" + this.state.UserType)
       .then(function (response) {
        
         self.setState({users:response.data});
@@ -94,7 +94,7 @@ class Login extends React.Component {
           }
           else
             if (response.data[0].role === "restaurent_owner") {
-              self.props.history.push('/DashboardO');
+              self.props.history.push('/DashboardC');
             }
         }
         else if (response.data.code === 204) {

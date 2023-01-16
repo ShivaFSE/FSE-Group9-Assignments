@@ -36,6 +36,15 @@ class DashboardC extends React.Component {
     </div>)
   }
 
+  addOrderMenuBox() {
+    return (<div className="search-container">
+      <fieldset>
+        <legend>Order Food</legend>
+        <input type='submit' value='Menu' onClick={this.handleClick} />
+      </fieldset>
+    </div>)
+  }
+
   render() {
     const user = getUser();
     
@@ -44,14 +53,11 @@ class DashboardC extends React.Component {
         <div className="Greeting">
           <h3>Welcome {user.name} !</h3>
         </div>
-        {(this.state.tableData.length > 0) ? this.addOrdersTable() : <h2 className='orders-heading'>No Active Orders!</h2>}
-        <div className="search-container">
-          <fieldset>
-            <legend>Order Food</legend>
-            <input type='submit' value='Menu' onClick={this.handleClick} />
-          </fieldset>
 
-        </div>
+        {(this.state.tableData.length > 0) ? this.addOrdersTable() : <h2 className='orders-heading'>No Active Orders!</h2>}
+        
+        {user.role === JSON.stringify("customer") ? this.addOrderMenuBox() : null}
+        
         <div className='user-menu'>
           <input type="button" onClick={this.handleLogout} value="Logout" />
         </div>

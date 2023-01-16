@@ -56,7 +56,7 @@ export const getUser = () => {
     console.log("calling api");
 
     let response = await fetch(apiBaseUrl);
-    if (response.status == 200) {
+    if (response.status === 200) {
       let data = await response.json();
       let ordersfromapi = data.map((order) => {
         return {
