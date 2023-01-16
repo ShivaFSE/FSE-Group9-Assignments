@@ -18,7 +18,6 @@ class Orders extends React.Component {
 
   handleClick = (e) => {
     this.props.history.push('/CreateService');
-    console.log("hi in cre");
     e.preventDefault();
   }
 
@@ -31,7 +30,7 @@ class Orders extends React.Component {
   addOrdersTable() {
     return (<div className="Orders">
       <h2 className='orders-heading'>All Orders</h2>
-    <OrdersTable data={this.state.tableData} />
+      <OrdersTable data={this.state.tableData} />
     </div>)
   }
 
@@ -39,7 +38,7 @@ class Orders extends React.Component {
     return (<div className="search-container">
       <fieldset>
         <legend>Order Food</legend>
-        <input type='submit' value='Menu' onClick={this.handleClick} />
+        <input type='submit' value='Restaurants' onClick={this.handleClick} />
       </fieldset>
     </div>)
   }
@@ -71,21 +70,21 @@ class Orders extends React.Component {
     );
   }
 
-  fetchdata() {
+  fetchOrdersData() {
     const user = getUser();
 
     // Revert back to correct api method when Backend is built
-    //var apiBaseUrl = "http://localhost:8000/api/core/orders?"
+    //var apiBaseUrl = "http://localhost:8000/api/core/orders"
     var apiBaseUrl = "http://localhost:8000/orders?"
     if (user.role === JSON.stringify("customer")) {
       console.log("customer user");
       var customer_id = user.id;
       apiBaseUrl = apiBaseUrl + "customer_id=" + customer_id;
     }
-    else if (user.role === JSON.stringify("restaurent_owner")) {
-      console.log("restaurent_owner user");
-      var restaurent_owner_id = user.id;
-      apiBaseUrl = apiBaseUrl + "restaurent_owner_id=" + restaurent_owner_id;
+    else if (user.role === JSON.stringify("restaurant_owner")) {
+      console.log("restaurant_owner user");
+      var restaurant_owner_id = user.id;
+      apiBaseUrl = apiBaseUrl + "restaurant_owner_id=" + restaurant_owner_id;
     }
     else {
       console.log("incorrect user: " + user.role);
@@ -99,7 +98,7 @@ class Orders extends React.Component {
         let ordersfromapi = data.map((order) => {
           return {
             "Order ID": order["Order ID"],
-            "Restaurent Name": order["Restaurent Name"],
+            "Restaurant Name": order["Restaurant Name"],
             "Station Name": order["Station Name"],
             "Ordered Date": order["Ordered Date"],
             "Time": order["Time"],
@@ -119,7 +118,7 @@ class Orders extends React.Component {
   componentDidMount() {
     if(isUserLoggedIn()) {
       console.log("User is " + getUser().name);
-      this.fetchdata();
+      this.fetchOrdersData();
 
       // var orders = fetchUserOrders(this.props.role).then(this.setState({ tableData: orders }));
       // this.setState({ tableData: orders });

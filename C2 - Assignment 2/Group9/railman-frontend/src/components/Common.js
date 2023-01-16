@@ -61,7 +61,7 @@ export const getUser = () => {
       let ordersfromapi = data.map((order) => {
         return {
           "Order ID": order["Order ID"],
-          "Restaurent Name": order["Restaurent Name"],
+          "Restaurant Name": order["Restaurant Name"],
           "Station Name": order["Station Name"],
           "Ordered Date": order["Ordered Date"],
           "Time": order["Time"],

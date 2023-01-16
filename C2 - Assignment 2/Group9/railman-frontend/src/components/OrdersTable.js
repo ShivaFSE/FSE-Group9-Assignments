@@ -81,12 +81,12 @@ export default class OrdersTable extends React.Component {
 const RenderRow = (props) => {
   let url="./createService";
   return props.keys.map((key, index) => {
-    if(key==="Order ID" || key==="Restaurent Name")
+    if(key==="Order ID" || key==="Restaurant Name")
     {
         return <td key={props.data[key]}><a href={url}>{props.data[key]}</a></td>
     }
     else
-    return <td key={props.data[key]}>{props.data[key]}</td>
+      return <td key={props.data[key]}>{props.data[key]}</td>
   })
 }
 

@@ -128,9 +128,9 @@ class Registration extends React.Component {
                   checked={this.state.role === "customer"}
                   onChange={this.handleChange} />
                 <label htmlFor="Customer">Customer</label>
-                <input type="radio" value="restaurent_owner" checked={this.state.role === "restaurent_owner"}
+                <input type="radio" value="restaurant_owner" checked={this.state.role === "restaurant_owner"}
                   onChange={this.handleChange} />
-                <label htmlFor="RestaurentOwner">Restaurent Owner</label>
+                <label htmlFor="RestaurantOwner">Restaurant Owner</label>
               </div>
 
               <div>
@@ -212,7 +212,7 @@ class Registration extends React.Component {
         </div>
       );
     }
-    else if (this.state.role === 'restaurent_owner') {
+    else if (this.state.role === 'restaurant_owner') {
       return (
         <div >
           <form onSubmit={this.handleSubmit}>
@@ -224,9 +224,9 @@ class Registration extends React.Component {
                   checked={this.state.role === "customer"}
                   onChange={this.handleChange} />
                 <label htmlFor="Customer">Customer</label>
-                <input type="radio" value="restaurent_owner" checked={this.state.role === "restaurent_owner"}
+                <input type="radio" value="restaurant_owner" checked={this.state.role === "restaurant_owner"}
                   onChange={this.handleChange} />
-                <label htmlFor="RestaurentOwner">Restaurent Owner</label>
+                <label htmlFor="RestaurantOwner">Restaurant Owner</label>
               </div>
 
 

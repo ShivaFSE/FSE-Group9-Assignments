@@ -93,7 +93,7 @@ class Login extends React.Component {
             self.props.history.push('/DashboardC');
           }
           else
-            if (response.data[0].role === "restaurent_owner") {
+            if (response.data[0].role === "restaurant_owner") {
               self.props.history.push('/DashboardC');
             }
         }
@@ -150,9 +150,9 @@ class Login extends React.Component {
                 checked={this.state.UserType === "customer"}
                 onChange={this.onValueChange} />
               <label htmlFor="Customer">Customer</label>
-              <input type="radio" value="restaurent_owner" checked={this.state.UserType === "restaurent_owner"}
+              <input type="radio" value="restaurant_owner" checked={this.state.UserType === "restaurant_owner"}
                 onChange={this.onValueChange} />
-              <label htmlFor="RestaurentOwner">Restaurent Owner</label>
+              <label htmlFor="RestaurantOwner">Restaurant Owner</label>
             </div>
             <input type='submit' name='Login' value='Login' disabled={!this.state.formValid} />
 
