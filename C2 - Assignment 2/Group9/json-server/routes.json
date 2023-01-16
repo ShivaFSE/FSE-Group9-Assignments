@@ -1,5 +1,5 @@
 {
   "/api/authentication/login": "/login",
   "/api/authentication/registration": "/registration",
-  "/api/core/orders": "/orders"
+  "/api/core/orders/:restaurent_owner_id": "/orders?restaurent_owner_id=:restaurent_owner_id"
 }

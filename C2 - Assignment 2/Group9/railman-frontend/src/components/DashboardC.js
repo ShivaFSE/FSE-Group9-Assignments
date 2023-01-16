@@ -61,14 +61,22 @@ class DashboardC extends React.Component {
 
   fetchdata() {
     const user = getUser();
-    var apiBaseUrl = "http://localhost:8000/api/core/orders?"
-    if (this.props.role === "Customer") {
+
+    // Revert back to correct api method when Backend is built
+    //var apiBaseUrl = "http://localhost:8000/api/core/orders?"
+    var apiBaseUrl = "http://localhost:8000/orders?"
+    if (user.role === JSON.stringify("customer")) {
+      console.log("customer user");
       var customer_id = user.id;
       apiBaseUrl = apiBaseUrl + "customer_id=" + customer_id;
     }
-    else if (this.props.role === "expert") {
-      var expert_id = user.id;
-      apiBaseUrl = apiBaseUrl + "expert_id=" + expert_id;
+    else if (user.role === JSON.stringify("restaurent_owner")) {
+      console.log("restaurent_owner user");
+      var restaurent_owner_id = user.id;
+      apiBaseUrl = apiBaseUrl + "restaurent_owner_id=" + restaurent_owner_id;
+    }
+    else {
+      console.log("incorrect user: " + user.role);
     }
 
     fetch(apiBaseUrl)

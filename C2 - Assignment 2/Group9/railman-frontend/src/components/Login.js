@@ -85,15 +85,15 @@ class Login extends React.Component {
       .then(function (response) {
        
         self.setState({users:response.data});
-        setUserSession(response.data[0].id, response.data[0].name, response.data[0].address);
+        setUserSession(response.data[0].id, response.data[0].name, response.data[0].address, response.data[0].role);
         if (response.status === 200) {
           console.log("Login successfull");
 
-          if (payload.role === "customer") {
-            self.props.history.push('/DashboardC');          
+          if (response.data[0].role === "customer") {
+            self.props.history.push('/DashboardC');
           }
           else
-            if (payload.role === "restaurent_owner") {
+            if (response.data[0].role === "restaurent_owner") {
               self.props.history.push('/DashboardO');
             }
         }
@@ -130,6 +130,7 @@ class Login extends React.Component {
         <div className="login-menu">
           <form className="demoForm" onSubmit={this.handleSubmit}>
          
+
             <div >
               <input type="email" required name="email"
                 placeholder="Email"
