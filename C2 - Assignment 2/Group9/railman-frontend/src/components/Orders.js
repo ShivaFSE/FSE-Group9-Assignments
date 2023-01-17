@@ -1,5 +1,5 @@
 import React from 'react';
-import { isUserLoggedIn, getUser, removeUserSession } from './Common';
+import { isUserLoggedIn, getUser } from './Common';
 import { withRouter } from "react-router-dom";
 import OrdersTable from "./OrdersTable";
 import './Orders.css';
@@ -9,21 +9,13 @@ class Orders extends React.Component {
     super(props);
 
     this.state = {
-      // currentbooking: this.props.location.state.detail,
       tableData: []
     }
-    this.handleClick = this.handleClick.bind(this);
-    this.handleLogout = this.handleLogout.bind(this);
+    this.handleOrderFood = this.handleOrderFood.bind(this);
   }
 
-  handleClick = (e) => {
-    this.props.history.push('/CreateService');
-    e.preventDefault();
-  }
-
-  handleLogout = (e) => {
-    removeUserSession();
-    this.props.history.push('/');
+  handleOrderFood = (e) => {
+    this.props.history.push('/Restaurants');
     e.preventDefault();
   }
 
@@ -34,11 +26,11 @@ class Orders extends React.Component {
     </div>)
   }
 
-  addOrderMenuBox() {
-    return (<div className="search-container">
+  addOrderFoodBox() {
+    return (<div className="searchbox-container">
       <fieldset>
         <legend>Order Food</legend>
-        <input type='submit' value='Restaurants' onClick={this.handleClick} />
+        <input type='submit' value='Restaurants' onClick={this.handleOrderFood} />
       </fieldset>
     </div>)
   }
@@ -47,7 +39,7 @@ class Orders extends React.Component {
     const user = getUser();
     if(!isUserLoggedIn()) {
       return (
-        <div>
+        <div className="dashboard-container">
         <h1>Plese login to continue..</h1>
       </div>
       )
@@ -59,13 +51,10 @@ class Orders extends React.Component {
           <h3>Welcome {user.name} !</h3>
         </div>
 
+        {user.role === JSON.stringify("customer") ? this.addOrderFoodBox() : null}
+
         {(this.state.tableData.length > 0) ? this.addOrdersTable() : <h2 className='orders-heading'>No Orders!</h2>}
         
-        {user.role === JSON.stringify("customer") ? this.addOrderMenuBox() : null}
-        
-        <div className='user-menu'>
-          <input type="button" onClick={this.handleLogout} value="Logout" />
-        </div>
       </div>
     );
   }
@@ -95,7 +84,7 @@ class Orders extends React.Component {
         return response.json();
       })
       .then(data => {
-        let ordersfromapi = data.map((order) => {
+        let allOrdersData = data.map((order) => {
           return {
             "Order ID": order["Order ID"],
             "Restaurant Name": order["Restaurant Name"],
@@ -107,7 +96,7 @@ class Orders extends React.Component {
             "Delivered By": order["Delivered By"]
           }
         });
-        this.setState({ tableData: ordersfromapi });
+        this.setState({ tableData: allOrdersData });
         console.log(this.state.tableData);
 
       }).catch(error => {

@@ -1,7 +1,6 @@
 import React from 'react';
 import { isUserLoggedIn } from './Common';
 import { withRouter } from "react-router-dom";
-import OrdersTable from "./OrdersTable";
 import './Restaurants.css';
 import mainLogo from './../assets/img/home.png'
 import RestaurantTile from './RestaurantTile';
@@ -36,14 +35,14 @@ class Restaurants extends React.Component {
     console.log("In");
     if(!isUserLoggedIn()) {
       return (
-        <div>
+        <div className="dashboard-container">
         <h1>Plese login to continue..</h1>
       </div>
       )
     }
 
     return (
-      <div>
+      <div className="dashboard-container">
         <h2>Order</h2>
         <section className="menu section bd-container" id="menu">
           <input type="text" placeholder="Filter by Area" onChange={(e) => this.searchRestaurants(e)} />

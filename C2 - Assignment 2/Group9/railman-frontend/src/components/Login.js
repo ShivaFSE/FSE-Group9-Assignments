@@ -117,7 +117,7 @@ class Login extends React.Component {
     console.log("In Login.js " + getUser().id + ", " + getUser().name + ", " + getUser().address);
     if(isUserLoggedIn()) {
       console.log("User is " + getUser().name);
-      return (<div className="loginContainer">
+      return (<div className="dashboard-container">
         {this.props.history.push('/DashboardC')}
       </div>)
     }
@@ -126,7 +126,7 @@ class Login extends React.Component {
     }
 
     return (
-      <div className="loginContainer">
+      <div className="dashboard-container">
         <div className="login-menu">
           <form className="demoForm" onSubmit={this.handleSubmit}>
          

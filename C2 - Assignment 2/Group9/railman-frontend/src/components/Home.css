@@ -1,6 +1,6 @@
 .home__container{
   margin: 50px 0 0 20px;
-  height: calc(100vh - 3rem);
+  /* height: calc(100vh - 3rem); */
   align-content: center;
   display:flex; 
   flex-direction:row;

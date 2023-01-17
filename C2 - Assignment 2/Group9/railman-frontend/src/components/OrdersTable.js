@@ -20,7 +20,6 @@ export default class OrdersTable extends React.Component {
     this.setState({ search: keyword })
   }
 
-
   getKeys = function () {
     return Object.keys(this.props.data[0]);
   }

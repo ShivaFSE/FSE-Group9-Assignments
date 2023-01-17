@@ -58,7 +58,7 @@ export const getUser = () => {
     let response = await fetch(apiBaseUrl);
     if (response.status === 200) {
       let data = await response.json();
-      let ordersfromapi = data.map((order) => {
+      let orderDetails = data.map((order) => {
         return {
           "Order ID": order["Order ID"],
           "Restaurant Name": order["Restaurant Name"],
@@ -70,8 +70,8 @@ export const getUser = () => {
           "Delivered By": order["Delivered By"]
         }
       });
-      console.log(ordersfromapi);
-      return ordersfromapi;
+      console.log(orderDetails);
+      return orderDetails;
       //return json;
     }
   }

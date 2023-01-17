@@ -12,13 +12,12 @@ class DashboardC extends React.Component {
       // currentbooking: this.props.location.state.detail,
       tableData: [ ]
     }
-    this.handleClick = this.handleClick.bind(this);
+    this.handleOrderFood = this.handleOrderFood.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
   }
 
-  handleClick = (e) => {
+  handleOrderFood = (e) => {
     this.props.history.push('/Restaurants');
-    console.log("hi in cre");
     e.preventDefault();
   }
 
@@ -37,10 +36,10 @@ class DashboardC extends React.Component {
   }
 
   addOrderMenuBox() {
-    return (<div className="search-container">
+    return (<div className="searchbox-container">
       <fieldset>
         <legend>Order Food</legend>
-        <input type='submit' value='Restaurants' onClick={this.handleClick} />
+        <input type='submit' value='Restaurants' onClick={this.handleOrderFood} />
       </fieldset>
     </div>)
   }
@@ -65,7 +64,7 @@ class DashboardC extends React.Component {
     );
   }
 
-  fetchdata() {
+  fetchActiveOrdersData() {
     const user = getUser();
 
     // Revert back to correct api method when Backend is built
@@ -90,7 +89,7 @@ class DashboardC extends React.Component {
         return response.json();
       })
       .then(data => {
-        let ordersfromapi = data
+        let allOrdersData = data
         .filter(order => order["Order Status"] === "Active")
         .map((order) => {
             return {
@@ -104,7 +103,7 @@ class DashboardC extends React.Component {
               "Delivered By": order["Delivered By"]
             }
         });
-        this.setState({ tableData: ordersfromapi });
+        this.setState({ tableData: allOrdersData });
         console.log(this.state.tableData);
 
       }).catch(error => {
@@ -115,7 +114,7 @@ class DashboardC extends React.Component {
   componentDidMount() {
     if(isUserLoggedIn()) {
       console.log("User is " + getUser().name);
-      this.fetchdata();
+      this.fetchActiveOrdersData();
     }
     else {
       console.log("User is not logged in");

@@ -4,7 +4,7 @@
     grid-template-columns: 1fr 1fr 1fr 1fr;          
     grid-template-rows: repeat(4, auto);          
     grid-row-gap:0.5em;
-    margin: 0 auto;       
+    margin: 0 auto;
 }
 .Greeting{
     grid-column: 1 ;                           
@@ -12,8 +12,8 @@
 }
 .orders-heading{
     margin: 100px 0 0 0px;
-    grid-column: 1 ;                           
-    grid-row:  1; 
+    grid-column: 1 ;
+    grid-row:  1;
 }
 .Orders{
     margin: 50px 0 0 0px;
@@ -123,13 +123,14 @@ td, th{
 .menu__container{
     grid-template-columns: repeat(2, 1fr);
     justify-content: center;
+    margin: 20px 0 0 0px;
   }
   
   .menu__content{
     position: relative;
     display: flex;
     flex-direction: column;
-    background-color: #FFFFFF;
+    background-color: #ed5c5c;
     border-radius: .5rem;
     box-shadow: 0 2px 4px rgba(3,74,40,.15);
     padding: .75rem;

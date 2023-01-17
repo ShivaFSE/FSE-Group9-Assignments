@@ -3,9 +3,6 @@ import './Home.css';
 import mainLogo from './../assets/img/main.jpg'
 
 class Home extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     return (
