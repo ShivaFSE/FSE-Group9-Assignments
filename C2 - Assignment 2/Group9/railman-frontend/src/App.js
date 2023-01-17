@@ -8,6 +8,7 @@ import UnderDevelopment from "./components/UnderDevelopment";
 import DashboardC from './components/DashboardC';
 import Orders from './components/Orders';
 import Restaurants from './components/Restaurants';
+import Menu from './components/Menu';
 
 class App extends React.Component {
 
@@ -42,6 +43,7 @@ class App extends React.Component {
               <Route path="/DashboardC" exact component={() => <DashboardC />} />
               <Route path="/Orders" exact component={() => <Orders />} />
               <Route path="/Restaurants" exact component={() => <Restaurants />} />
+              <Route path="/Menu" exact component={() => <Menu />} />
           </BrowserRouter>
         </div>
 

@@ -1,18 +1,26 @@
 import React from 'react';
-import { isUserLoggedIn } from './Common';
+import { isUserLoggedIn, getUser } from './Common';
 import { withRouter } from "react-router-dom";
 import './Restaurants.css';
-import mainLogo from './../assets/img/home.png'
 import RestaurantTile from './RestaurantTile';
 
 class Restaurants extends React.Component {
   constructor(props) {
     super(props);
 
+    this.handleRestaurantClick = this.handleRestaurantClick.bind(this);
     this.state = {
       // currentbooking: this.props.location.state.detail,
       restaurantData: []
     }
+  }
+
+  handleRestaurantClick = (event) => {
+    console.log("in handleRestaurantClick: " + event);
+    this.props.history.push({
+      pathname: '/Menu',
+      state: { restaurant_id: event }
+    });
   }
 
   searchRestaurants = (event) => {
@@ -25,7 +33,7 @@ class Restaurants extends React.Component {
     return this.state.restaurantData.map((restaurant) => {
       if(restaurant.Name !== null && restaurant.Timings !== null && restaurant.Description !== null)
       {
-        return <RestaurantTile logo={mainLogo} name={restaurant.Name} timings={restaurant.Timings} description={restaurant.Description}></RestaurantTile>
+        return <RestaurantTile details={restaurant} onClickEvent={this.handleRestaurantClick}></RestaurantTile>
       }
       return <div />
     })
@@ -44,9 +52,9 @@ class Restaurants extends React.Component {
     return (
       <div className="dashboard-container">
         <h2>Order</h2>
-        <section className="menu section bd-container" id="menu">
+        <section className="restaurant section bd-container" id="restaurant">
           <input type="text" placeholder="Filter by Area" onChange={(e) => this.searchRestaurants(e)} />
-          <div className="menu__container bd-grid">
+          <div className="restaurant__container bd-grid">
             {(this.state.restaurantData.length > 0) ? this.addRestaurantTiles() : <h3>No Restaurants found in this area!</h3>}
           </div>
         </section>
@@ -66,6 +74,16 @@ class Restaurants extends React.Component {
     var apiBaseUrl = "http://localhost:8000/restaurants?"
     apiBaseUrl = apiBaseUrl + "Address=" + location;
 
+    const user = getUser();
+    if (user.role === JSON.stringify("restaurant_owner")) {
+      var restaurant_owner_id = user.id;
+      console.log("restaurant_owner user: " + restaurant_owner_id);
+      apiBaseUrl = apiBaseUrl + "&restaurant_owner_id=" + restaurant_owner_id;
+    }
+    else {
+      console.log("customer user: " + user.role);
+    }
+
     fetch(apiBaseUrl)
       .then((response) => {
         return response.json();
@@ -78,7 +96,8 @@ class Restaurants extends React.Component {
             "Logo": restaurant["Logo"],
             "Address": restaurant["Address"],
             "Timings": restaurant["Timings"],
-            "Description": restaurant["Description"]
+            "Description": restaurant["Description"],
+            "id": restaurant["id"]
           }
         });
         this.setState({ restaurantData: restaurantsReceived });

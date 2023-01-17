@@ -120,48 +120,59 @@ td, th{
     background-color: #1D2521;
   }
 
-.restaurant__container{
+.menu__container{
     grid-template-columns: repeat(2, 1fr);
     justify-content: center;
     margin: 20px 0 0 0px;
   }
   
-  .restaurant__content{
+  .menu__content {
     position: relative;
-    display: flex;
-    flex-direction: column;
-    background-color: #5fa4ad;
+    display:flex; 
+    flex-direction:row;
+    background-color: #a9b78f;
     border-radius: .5rem;
     box-shadow: 0 2px 4px rgba(3,74,40,.15);
     padding: .75rem;
-  }
-  
-  .restaurant__img{
-    width: 150px;
-    align-self: center;
     margin-bottom: 1rem;
-    background-color: #f4f7f8;
-    border-radius: .5rem;
   }
   
-  .restaurant__name {
+  .menu__img {
+    width: 75px;
+    align-self: center;
+    /* margin-bottom: 1rem; */
+  }
+
+  .menu_details {
+    display:flex;
+    flex-direction:column;
+    margin: 0px 0 0 20px;
+    width: 400px;
+  }
+  
+  .menu__name, .menu__price {
     font-weight: 600;
-    color: rgb(251, 251, 249);
+    color: black;
   }
   
-  .restaurant__name{
+  .menu__name {
+    margin: 0px 0 0 0px;
     font-size: 1rem;
   }
   
-  .restaurant__timings, .restaurant__detail{
+  .menu__timings, .menu__price {
     font-size: .875rem;
   }
   
-  .restaurant__timings{
-    margin-bottom: .5rem;
+  .menu__price {
+    margin: 20px 0 0 0px;
+  }
+
+  .menu__timings {
+    margin: 0px 0 0 0px;
   }
   
-  .restaurant__button{
+  .menu__button {
     position: absolute;
     bottom: 0;
     right: 0;

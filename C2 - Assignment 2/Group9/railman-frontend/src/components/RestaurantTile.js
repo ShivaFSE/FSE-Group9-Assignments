@@ -1,14 +1,27 @@
+import React from 'react';
 import './Restaurants.css';
+import mainLogo from './../assets/img/home.png'
 
-function RestaurantTile(props) {
-  return (
-    <div className="menu__content">
-        <img src={props.logo} alt="" className="menu__img" />
-        <h3 className="menu__name">{props.name}</h3>
-        <span className="menu__detail">{props.timings}</span>
-        <span className="menu__preci">{props.description}</span>
-    </div>
-  );
+class RestaurantTile extends React.Component {
+  constructor(props) {
+    super(props);
+    this.onClickEvent = this.onClickEvent.bind(this);
+  }
+
+  onClickEvent(event) {
+    this.props.onClickEvent(this.props.details.id);
+  }
+
+  render() {
+    return (
+      <div className="restaurant__content" onClick={this.onClickEvent}>
+          <img src={mainLogo} alt="" className="restaurant__img" />
+          <h3 className="restaurant__name">{this.props.details.Name}</h3>
+          <span className="restaurant__timings">{this.props.details.Timings}</span>
+          <span className="restaurant__detail">{this.props.details.Description}</span>
+      </div>
+    );
+  }
 }
 
 export default RestaurantTile;

@@ -12,10 +12,16 @@ class Orders extends React.Component {
       tableData: []
     }
     this.handleOrderFood = this.handleOrderFood.bind(this);
+    this.handleCart = this.handleCart.bind(this);
   }
 
   handleOrderFood = (e) => {
     this.props.history.push('/Restaurants');
+    e.preventDefault();
+  }
+
+  handleCart = (e) => {
+    this.props.history.push('/UnderDevelopment');
     e.preventDefault();
   }
 
@@ -31,6 +37,7 @@ class Orders extends React.Component {
       <fieldset>
         <legend>Order Food</legend>
         <input type='submit' value='Restaurants' onClick={this.handleOrderFood} />
+        <input type='submit' value='Cart' onClick={this.handleCart} />
       </fieldset>
     </div>)
   }
