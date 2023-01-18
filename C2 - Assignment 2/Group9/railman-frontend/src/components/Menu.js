@@ -49,6 +49,10 @@ class Menu extends React.Component {
 
   handleAddMenuItem = (e) => {
     console.log("handleRemoveRestaurant restaurant_id: " + this.props.location.state?.restaurant_id);
+    this.props.history.push({
+      pathname: '/AddMenuItem',
+      state: { restaurant_id: this.props.location.state?.restaurant_id }
+    });
   }
 
   handleMenuItemClick = (item) => {
@@ -141,7 +145,7 @@ class Menu extends React.Component {
     // Revert back to correct api method when Backend is built
     //var apiBaseUrl = "http://localhost:8000/api/core/menu"
     var apiBaseUrl = "http://localhost:8000/menu?"
-    apiBaseUrl = apiBaseUrl + "restaurant_owner_id=" + restaurant_id;
+    apiBaseUrl = apiBaseUrl + "restaurant_id=" + restaurant_id;
 
     fetch(apiBaseUrl)
       .then((response) => {
@@ -156,6 +160,7 @@ class Menu extends React.Component {
             "Price": item["Price"],
             "Timings": item["Timings"],
             "restaurant_owner_id": item["restaurant_owner_id"],
+            "restaurant_id": item["restaurant_id"],
             "id": item["id"]
           }
         });

@@ -119,7 +119,7 @@ class Registration extends React.Component {
 
     if (this.state.role === "customer") {
       return (
-        <div className="registrationContainer">
+        <div className="dashboard-container">
           <form onSubmit={this.handleSubmit}>
             <fieldset>
               <legend>Signup Form</legend>

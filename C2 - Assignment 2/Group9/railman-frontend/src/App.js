@@ -10,6 +10,7 @@ import Orders from './components/Orders';
 import Restaurants from './components/Restaurants';
 import Menu from './components/Menu';
 import AddRestaurant from './components/AddRestaurant';
+import AddMenuItem from './components/AddMenuItem';
 
 class App extends React.Component {
 
@@ -46,6 +47,7 @@ class App extends React.Component {
               <Route path="/Restaurants" exact component={() => <Restaurants />} />
               <Route path="/Menu" exact component={() => <Menu />} />
               <Route path="/AddRestaurant" exact component={() => <AddRestaurant />} />
+              <Route path="/AddMenuItem" exact component={() => <AddMenuItem />} />
           </BrowserRouter>
         </div>
 

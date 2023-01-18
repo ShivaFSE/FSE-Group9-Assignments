@@ -1,10 +1,11 @@
 import React from 'react';
-import './AddRestaurant.css'
+import './AddMenuItem.css'
 import { FormErrors } from './FormErrors';
+import { getUser } from './Common';
 import axios from 'axios';
 import { withRouter } from "react-router-dom";
 
-class AddRestaurant extends React.Component {
+class AddMenuItem extends React.Component {
   constructor(props) {
     super(props);
 
@@ -13,13 +14,12 @@ class AddRestaurant extends React.Component {
     this.state = {
       name: '',
       logo: '',
-      address: '',
+      price: '',
       timings: '',
-      description: '',
 
-      formErrors: { name: '', address: '', timings: '' },
+      formErrors: { name: '', price: '', timings: '' },
       nameValid: false,
-      addressValid: false,
+      priceValid: false,
       timingsValid: false,
       formValid: false,
     }
@@ -35,16 +35,16 @@ class AddRestaurant extends React.Component {
     console.log("key: " + fieldName + ", value: " + value);
     let fieldValidationErrors = this.state.formErrors;
     let nameValid = this.state.nameValid;
-    let addressValid = this.state.addressValid;
+    let priceValid = this.state.priceValid;
     let timingsValid = this.state.timingsValid;
     switch (fieldName) {
       case 'name':
         nameValid = value.length >= 1;
         fieldValidationErrors.name = nameValid ? '' : ' is too short';
         break;
-      case 'address':
-        addressValid = value.length >= 1;
-        fieldValidationErrors.address = addressValid ? '' : ' is too short';
+      case 'price':
+        priceValid = value.length >= 1;
+        fieldValidationErrors.price = priceValid ? '' : 'is too short';
         break;
       case 'timings':
         timingsValid = value.length >= 1;
@@ -56,14 +56,14 @@ class AddRestaurant extends React.Component {
     this.setState({
       formErrors: fieldValidationErrors,
       nameValid: nameValid,
-      addressValid: addressValid,
+      priceValid: priceValid,
       timingsValid: timingsValid
     }, this.validateForm);
   }
 
   validateForm() {
     console.log("in validateForm");
-    this.setState({ formValid: this.state.nameValid && this.state.addressValid && this.state.timingsValid });
+    this.setState({ formValid: this.state.nameValid && this.state.priceValid && this.state.timingsValid });
   }
 
   errorClass(error) {
@@ -80,29 +80,31 @@ class AddRestaurant extends React.Component {
   }
 
   handleSubmit = (e) => {
-    console.log("handleSubmit restaurant_owner_id: " + this.props.location.state?.restaurant_owner_id);
-    var apiBaseUrl = "http://localhost:8000/api/core/restaurants";
+    console.log("handleSubmit restaurant_id: " + this.props.location.state?.restaurant_id);
+    var apiBaseUrl = "http://localhost:8000/api/core/menu";
     var self = this;
+    const user = getUser();
+
     var payload = {
       "Name": this.state.name,
       "Logo": "",
-      "Address": this.state.address,
+      "Price": this.state.price,
       "Timings": this.state.timings,
-      "Description": this.state.description,
-      "restaurant_owner_id": this.props.location.state?.restaurant_owner_id,
+      "restaurant_owner_id": user.id,
+      "restaurant_id": this.props.location.state?.restaurant_id
     }
     
     axios.post(apiBaseUrl, payload)
       .then(function (response) {
         console.log(response);
         if (response.status === 201) {
-          alert("Restaurant successfull added");
-          console.log("Adding Restaurant successfull");
+          alert("Menu Item successfull added");
+          console.log("Adding Menu Item successfull");
           self.props.history.push('/Restaurants');
         }
         else if (response.data.code === 204) {
-          console.log("invalid restaurant data");
-          alert("invalid restaurant data")
+          console.log("invalid menu item data");
+          alert("invalid menu item data")
         }
         else {
           console.log("User exists");
@@ -123,11 +125,11 @@ class AddRestaurant extends React.Component {
       <div className="dashboard-container">
         <form onSubmit={this.handleSubmit}>
           <fieldset>
-            <legend>Add a New Restaurant</legend>
+            <legend>Add a New Menu Item</legend>
             <div>
               <input
                 type="text"
-                placeholder="Enter your restaurant name *"
+                placeholder="Enter your Menu Item name *"
                 name="name"
                 value={this.state.name}
                 onChange={this.handleUserInput}
@@ -137,9 +139,9 @@ class AddRestaurant extends React.Component {
             <div>
               <input
                 type="text"
-                placeholder="Enter Area name *"
-                name="address"
-                value={this.state.address}
+                placeholder="Enter Price of Menu item *"
+                name="price"
+                value={this.state.price}
                 onChange={this.handleUserInput}
                 required
               />
@@ -147,20 +149,11 @@ class AddRestaurant extends React.Component {
             <div>
               <input
                 type="text"
-                placeholder="Enter Timings of restaurant *"
+                placeholder="Enter Timings of menu availability *"
                 name="timings"
                 value={this.state.timings}
                 onChange={this.handleUserInput}
                 required
-              />
-            </div>
-            <div>
-              <input
-                type="text"
-                placeholder="Enter description in one line"
-                name="description"
-                value={this.state.description}
-                onChange={this.handleUserInput}
               />
             </div>
             <input type='submit' value='Submit' disabled={!this.state.formValid} />
@@ -175,4 +168,4 @@ class AddRestaurant extends React.Component {
   }
 }
 
-export default withRouter(AddRestaurant);
+export default withRouter(AddMenuItem);
