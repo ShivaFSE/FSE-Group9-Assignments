@@ -1,6 +1,7 @@
 import React from 'react';
-import { isUserLoggedIn } from './Common';
+import { isUserLoggedIn, getUser } from './Common';
 import { withRouter } from "react-router-dom";
+import axios from 'axios';
 import './Menu.css';
 import MenuTile from './MenuTile';
 
@@ -9,14 +10,79 @@ class Menu extends React.Component {
     super(props);
 
     this.handleMenuItemClick = this.handleMenuItemClick.bind(this);
+    this.handleRemoveRestaurant = this.handleRemoveRestaurant.bind(this);
+    this.handleAddMenuItem = this.handleAddMenuItem.bind(this);
 
     this.state = {
       menuData: []
     }
   }
 
+  handleRemoveRestaurant = (e) => {
+    console.log("handleRemoveRestaurant restaurant_id: " + this.props.location.state?.restaurant_id);
+    var apiBaseUrl = "http://localhost:8000/api/core/restaurants?id=" + this.props.location.state?.restaurant_id;
+    var self = this;
+    
+    axios.delete(apiBaseUrl)
+      .then(function (response) {
+        console.log(response);
+        if (response.status === 200) {
+          alert("Restaurant successfull removed");
+          self.props.history.push('/Restaurants');
+        }
+        else if (response.data.code === 204) {
+          console.log("invalid restaurant data");
+          alert("invalid restaurant data")
+        }
+        else {
+          console.log("User exists");
+          alert("User exist");
+        }
+      })
+      .catch(function (error) {
+        console.log("")
+        console.log(error);
+      });
+
+    e.preventDefault();
+  }
+
+  handleAddMenuItem = (e) => {
+    console.log("handleRemoveRestaurant restaurant_id: " + this.props.location.state?.restaurant_id);
+  }
+
   handleMenuItemClick = (item) => {
+    const user = getUser();
     console.log("in handleMenuItemClick: " + item.id + ", " + item.restaurant_owner_id + ", " + item.Name);
+    if (user.role === JSON.stringify("restaurant_owner")) {
+      console.log("remove Menu item id: " + item.id);
+    var apiBaseUrl = "http://localhost:8000/api/core/menu?id=" + item.id;
+    var self = this;
+    
+    axios.delete(apiBaseUrl)
+      .then(function (response) {
+        console.log(response);
+        if (response.status === 200) {
+          alert("Menu Item successfull removed");
+          self.props.history.push('/Restaurants');
+        }
+        else if (response.data.code === 204) {
+          console.log("invalid restaurant data");
+          alert("invalid restaurant data")
+        }
+        else {
+          console.log("User exists");
+          alert("User exist");
+        }
+      })
+      .catch(function (error) {
+        console.log("")
+        console.log(error);
+      });
+    }
+    else if (user.role === JSON.stringify("customer")) {
+      
+    }
   }
 
   addMenuTiles() {
@@ -29,19 +95,33 @@ class Menu extends React.Component {
     })
   }
 
+  addRemoveRestaurantOrAddMenuItemButton() {
+    const user = getUser();
+    if (user.role === JSON.stringify("restaurant_owner")) {
+      return (
+        <div className='user-button-menu'>
+          <input type="button" onClick={this.handleRemoveRestaurant} value="Remove Restaurant" />
+          <input type="button" onClick={this.handleAddMenuItem} value="Add Menu Item" />
+        </div>
+      )
+    }
+    return null
+  }
+
   render() {
     console.log("In");
     if(!isUserLoggedIn()) {
       return (
         <div className="dashboard-container">
-        <h1>Plese login to continue..</h1>
-      </div>
+          <h1>Plese login to continue..</h1>
+        </div>
       )
     }
 
     return (
       <div className="dashboard-container">
         <h2>Menu</h2>
+        {this.addRemoveRestaurantOrAddMenuItemButton()}
         <section className="menu section bd-container" id="menu">
           <div className="menu__container">
             {(this.state.menuData.length > 0) ? this.addMenuTiles() : <h3>No Menu for this Restaurant yet!</h3>}

@@ -9,6 +9,8 @@ class Restaurants extends React.Component {
     super(props);
 
     this.handleRestaurantClick = this.handleRestaurantClick.bind(this);
+    this.addNewRestaurant = this.addNewRestaurant.bind(this);
+    
     this.state = {
       // currentbooking: this.props.location.state.detail,
       restaurantData: []
@@ -21,6 +23,21 @@ class Restaurants extends React.Component {
       pathname: '/Menu',
       state: { restaurant_id: event }
     });
+  }
+
+  addNewRestaurant = (event) => {
+    const user = getUser();
+    if (user.role === JSON.stringify("restaurant_owner")) {
+      var owner_id = user.id;
+      console.log("restaurant_owner user: " + owner_id);
+      this.props.history.push({
+        pathname: '/AddRestaurant',
+        state: { restaurant_owner_id: owner_id }
+      });
+    }
+    else {
+      console.log("customer user: " + user.role);
+    }
   }
 
   searchRestaurants = (event) => {
@@ -39,6 +56,18 @@ class Restaurants extends React.Component {
     })
   }
 
+  addNewRestaurantButton() {
+    const user = getUser();
+    if (user.role === JSON.stringify("restaurant_owner")) {
+      return (
+      <div className='user-menu'>
+        <input type="button" onClick={this.addNewRestaurant} value="Add a Restaurant" />
+        </div>
+      )
+    }
+    return null
+  }
+
   render() {
     console.log("In");
     if(!isUserLoggedIn()) {
@@ -52,6 +81,7 @@ class Restaurants extends React.Component {
     return (
       <div className="dashboard-container">
         <h2>Order</h2>
+        {this.addNewRestaurantButton()}
         <section className="restaurant section bd-container" id="restaurant">
           <input type="text" placeholder="Filter by Area" onChange={(e) => this.searchRestaurants(e)} />
           <div className="restaurant__container bd-grid">

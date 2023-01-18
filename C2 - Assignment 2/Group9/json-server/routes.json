@@ -2,8 +2,11 @@
   "/api/authentication/login": "/login",
   "/api/authentication/registration": "/registration",
   "/api/core/orders/:restaurant_owner_id": "/orders?restaurant_owner_id=:restaurant_owner_id",
+  "/api/core/restaurants": "/restaurants",
   "/api/core/restaurants/:Address": "/restaurants?Address=:Address",
   "/api/core/restaurants/:restaurant_owner_id": "/restaurants?restaurant_owner_id=:restaurant_owner_id",
   "/api/core/restaurants/:Address:restaurant_owner_id": "/restaurants?Address=:Address&restaurant_owner_id=:restaurant_owner_id",
-  "/api/core/menu/:restaurant_owner_id": "/menu?restaurant_owner_id=:restaurant_owner_id"
+  "/api/core/restaurants\\?id=:id": "/restaurants/:id",
+  "/api/core/menu/:restaurant_owner_id": "/menu?restaurant_owner_id=:restaurant_owner_id",
+  "/api/core/menu\\?id=:id": "/menu/:id"
 }

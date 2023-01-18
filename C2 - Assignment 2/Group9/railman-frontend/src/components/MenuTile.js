@@ -1,5 +1,6 @@
 import React from 'react';
 import './Menu.css';
+import { getUser } from './Common';
 import mainLogo from './../assets/img/plate1.png'
 
 class MenuTile extends React.Component {
@@ -10,6 +11,23 @@ class MenuTile extends React.Component {
 
   onClickEvent(event) {
     this.props.onClickEvent(this.props.details);
+  }
+
+  addCartOrRemoveItemButton() {
+    const user = getUser();
+    if (user.role === JSON.stringify("restaurant_owner")) {
+      return (
+        <div>
+          <button className="menu__button" onClick={this.onClickEvent}>Remove Item</button>
+        </div>
+      )
+    }
+    else if (user.role === JSON.stringify("customer")) {
+      <div>
+        <button className="menu__button" onClick={this.onClickEvent}>Add to cart</button>
+      </div>
+    }
+    return null
   }
 
   render() {
@@ -23,9 +41,7 @@ class MenuTile extends React.Component {
           <label className="menu__price">{this.props.details.Price}</label>
           <label className="menu__timings">{this.props.details.Timings}</label>
         </div>
-        <div>
-          <button className="menu__button" onClick={this.onClickEvent}>Add to cart</button>
-        </div>
+        {this.addCartOrRemoveItemButton()}
       </div>
     );
   }
