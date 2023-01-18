@@ -214,7 +214,7 @@ class Registration extends React.Component {
     }
     else if (this.state.role === 'restaurant_owner') {
       return (
-        <div >
+        <div className="dashboard-container">
           <form onSubmit={this.handleSubmit}>
             <fieldset>
               <legend>Signup Form</legend>
