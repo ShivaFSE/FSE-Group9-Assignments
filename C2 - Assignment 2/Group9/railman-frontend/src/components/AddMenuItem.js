@@ -1,7 +1,7 @@
 import React from 'react';
 import './AddMenuItem.css'
 import { FormErrors } from './FormErrors';
-import { getUser } from './Common';
+import { getUser, getAppDomain } from './Common';
 import axios from 'axios';
 import { withRouter } from "react-router-dom";
 
@@ -81,7 +81,7 @@ class AddMenuItem extends React.Component {
 
   handleSubmit = (e) => {
     console.log("handleSubmit restaurant_id: " + this.props.location.state?.restaurant_id);
-    var apiBaseUrl = "http://localhost:8000/api/core/menu";
+    var apiBaseUrl = getAppDomain() + "/api/core/menu";
     var self = this;
     const user = getUser();
 

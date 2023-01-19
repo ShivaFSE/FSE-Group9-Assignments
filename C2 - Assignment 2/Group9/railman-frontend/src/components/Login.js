@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { isUserLoggedIn, getUser, setUserSession } from './Common';
+import { isUserLoggedIn, getUser, setUserSession, getAppDomain } from './Common';
 import './Login.css';
 import { FormErrors } from './FormErrors';
 import axios from 'axios';
@@ -71,7 +71,7 @@ class Login extends React.Component {
     e.preventDefault();
   }
   handleSubmit = (e) => {
-    var apiBaseUrl = "http://localhost:8000/api/authentication/";
+    var apiBaseUrl = getAppDomain() + "/api/authentication/";
     var self = this;
 
     // Revert back to post method when Backend is built

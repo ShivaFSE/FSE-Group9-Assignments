@@ -1,5 +1,5 @@
 import React from 'react';
-import { isUserLoggedIn, getUser } from './Common';
+import { isUserLoggedIn, getUser, getAppDomain } from './Common';
 import { withRouter } from "react-router-dom";
 import './Restaurants.css';
 import RestaurantTile from './RestaurantTile';
@@ -98,7 +98,7 @@ class Restaurants extends React.Component {
     
     // Revert back to correct api method when Backend is built
     //var apiBaseUrl = "http://localhost:8000/api/core/restaurants"
-    var apiBaseUrl = "http://localhost:8000/restaurants?"
+    var apiBaseUrl = getAppDomain() + "/restaurants?"
     if (location !== "") {
       apiBaseUrl = apiBaseUrl + "Address=" + location;
     }

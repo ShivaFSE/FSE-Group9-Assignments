@@ -1,5 +1,5 @@
 import React from 'react';
-import { isUserLoggedIn, getUser, removeUserSession } from './Common';
+import { isUserLoggedIn, getUser, removeUserSession, getAppDomain } from './Common';
 import { withRouter } from "react-router-dom";
 import OrdersTable from "./OrdersTable";
 import './Orders.css';
@@ -69,7 +69,7 @@ class DashboardC extends React.Component {
 
     // Revert back to correct api method when Backend is built
     //var apiBaseUrl = "http://localhost:8000/api/core/orders?"
-    var apiBaseUrl = "http://localhost:8000/orders?"
+    var apiBaseUrl = getAppDomain() + "/orders?"
     if (user.role === JSON.stringify("customer")) {
       console.log("customer user");
       var customer_id = user.id;

@@ -1,5 +1,6 @@
 import React from 'react';
 import './AddRestaurant.css'
+import { getAppDomain } from './Common';
 import { FormErrors } from './FormErrors';
 import axios from 'axios';
 import { withRouter } from "react-router-dom";
@@ -81,7 +82,7 @@ class AddRestaurant extends React.Component {
 
   handleSubmit = (e) => {
     console.log("handleSubmit restaurant_owner_id: " + this.props.location.state?.restaurant_owner_id);
-    var apiBaseUrl = "http://localhost:8000/api/core/restaurants";
+    var apiBaseUrl = getAppDomain() + "/api/core/restaurants";
     var self = this;
     var payload = {
       "Name": this.state.name,

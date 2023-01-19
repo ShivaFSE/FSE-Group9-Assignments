@@ -1,5 +1,6 @@
 import React from 'react';
 import './Registration.css'
+import { getAppDomain } from './Common';
 import { FormErrors } from './FormErrors';
 import axios from 'axios';
 class Registration extends React.Component {
@@ -75,7 +76,7 @@ class Registration extends React.Component {
   }
 
   handleSubmit = (e) => {
-    var apiBaseUrl = "http://localhost:8000/api/authentication/";
+    var apiBaseUrl = getAppDomain() + "/api/authentication/";
     var self = this;
     var payload = {
       "name": this.state.name,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { isUserLoggedIn, getUser } from './Common';
+import { isUserLoggedIn, getUser, getAppDomain } from './Common';
 import { withRouter } from "react-router-dom";
 import OrdersTable from "./OrdersTable";
 import './Orders.css';
@@ -71,7 +71,7 @@ class Orders extends React.Component {
 
     // Revert back to correct api method when Backend is built
     //var apiBaseUrl = "http://localhost:8000/api/core/orders"
-    var apiBaseUrl = "http://localhost:8000/orders?"
+    var apiBaseUrl = getAppDomain() + "/orders?"
     if (user.role === JSON.stringify("customer")) {
       console.log("customer user");
       var customer_id = user.id;
