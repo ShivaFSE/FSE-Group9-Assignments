@@ -17,6 +17,7 @@ class RestaurantTile extends React.Component {
       <div className="restaurant__content" onClick={this.onClickEvent}>
           <img src={mainLogo} alt="" className="restaurant__img" />
           <h3 className="restaurant__name">{this.props.details.Name}</h3>
+          <span className="restaurant__city">{this.props.details.Address}</span>
           <span className="restaurant__timings">{this.props.details.Timings}</span>
           <span className="restaurant__detail">{this.props.details.Description}</span>
       </div>

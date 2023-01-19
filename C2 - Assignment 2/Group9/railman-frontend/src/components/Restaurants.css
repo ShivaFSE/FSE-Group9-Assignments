@@ -153,11 +153,11 @@ td, th{
     font-size: 1rem;
   }
   
-  .restaurant__timings, .restaurant__detail{
+  .restaurant__timings, .restaurant__detail, .restaurant__city{
     font-size: .875rem;
   }
   
-  .restaurant__timings{
+  .restaurant__timings, .restaurant__city{
     margin-bottom: .5rem;
   }
   

@@ -95,14 +95,13 @@ class Restaurants extends React.Component {
   fetchRestaurantsData(location) {
     
     console.log("delivery destination: " + location);
-    if (location === "") {
-      return
-    }
-
+    
     // Revert back to correct api method when Backend is built
     //var apiBaseUrl = "http://localhost:8000/api/core/restaurants"
     var apiBaseUrl = "http://localhost:8000/restaurants?"
-    apiBaseUrl = apiBaseUrl + "Address=" + location;
+    if (location !== "") {
+      apiBaseUrl = apiBaseUrl + "Address=" + location;
+    }
 
     const user = getUser();
     if (user.role === JSON.stringify("restaurant_owner")) {
@@ -136,6 +135,15 @@ class Restaurants extends React.Component {
       }).catch(error => {
         console.log(error);
       });
+  }
+
+  componentDidMount() {
+    if(isUserLoggedIn()) {
+      this.fetchRestaurantsData("");
+    }
+    else {
+      console.log("User is not logged in");
+    }
   }
 }
 

@@ -1,7 +1,7 @@
 {
   "/api/authentication/login": "/login",
   "/api/authentication/registration": "/registration",
-  "/api/authentication/registration/:email:password:role": "/registration?email=:email&password=:password&role=:role",
+  "/api/authentication/registration\\?email=:email&password=:password": "/registration?email=:email&password=:password",
   "/api/core/orders/:restaurant_owner_id": "/orders?restaurant_owner_id=:restaurant_owner_id",
   "/api/core/restaurants": "/restaurants",
   "/api/core/restaurants/:Address": "/restaurants?Address=:Address",
