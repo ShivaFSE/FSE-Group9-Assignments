@@ -11,6 +11,7 @@ class Registration extends React.Component {
       name: '',
       email: '',
       password: '',
+      reenter_password: '',
       address: '',
       city: '',
       pincode: '',
@@ -42,8 +43,34 @@ class Registration extends React.Component {
         fieldValidationErrors.email = emailValid ? '' : ' is invalid';
         break;
       case 'password':
-        passwordValid = value.length >= 6;
-        fieldValidationErrors.password = passwordValid ? '' : ' is too short';
+        console.log("password: ", value, ", reenter: ", this.state.reenter_password);
+        if(value.length < 6) {
+          passwordValid = false
+          fieldValidationErrors.password = ' is too short';
+        }
+        else if(this.state.reenter_password !== value) {
+          passwordValid = false
+          fieldValidationErrors.password = ' passwords do not match';
+        }
+        else {
+          fieldValidationErrors.password = '';
+          passwordValid = true
+        }
+        break;
+      case 'reenter_password':
+        console.log("password: ", this.state.password, ", reenter: ", value);
+        if(value.length < 6) {
+          passwordValid = false
+          fieldValidationErrors.password = ' is too short';
+        }
+        else if(this.state.password !== value) {
+          passwordValid = false
+          fieldValidationErrors.password = ' passwords do not match';
+        }
+        else {
+          fieldValidationErrors.password = '';
+          passwordValid = true
+        }
         break;
       case 'phone':
         phonevalid = value.match(/^[0-9]{10}$/i);
@@ -144,6 +171,7 @@ class Registration extends React.Component {
                   required
                 />
               </div>
+
               <div>
                 <input
                   type="text"
@@ -154,8 +182,8 @@ class Registration extends React.Component {
                   required
                 />
               </div>
-              <div>
 
+              <div>
                 <input
                   type="password"
                   placeholder="Enter Password *"
@@ -165,6 +193,18 @@ class Registration extends React.Component {
                   required
                 />
               </div>
+
+              <div>
+                <input
+                  type="password"
+                  placeholder="Re-enter Password *"
+                  name="reenter_password"
+                  value={this.state.reenter_password}
+                  onChange={this.handleUserInput}
+                  required
+                />
+              </div>
+
               <div>
                 <input
                   type="text"
@@ -172,9 +212,9 @@ class Registration extends React.Component {
                   name="address"
                   value={this.state.address}
                   onChange={this.handleUserInput}
-
                 />
               </div>
+
               <div>
                 <input
                   type="text"
@@ -185,6 +225,7 @@ class Registration extends React.Component {
                   required
                 />
               </div>
+
               <div>
                 <input
                   type="text"
@@ -195,6 +236,7 @@ class Registration extends React.Component {
                   required
                 />
               </div>
+
               <input
                 type="text"
                 placeholder="Enter Phonenumber *"
@@ -203,6 +245,7 @@ class Registration extends React.Component {
                 onChange={this.handleUserInput}
                 required
               />
+
               <input type='submit' value='Submit' disabled={!this.state.formValid} />
 
               <div className='error-message' >

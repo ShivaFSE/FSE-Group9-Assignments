@@ -107,10 +107,10 @@ class Login extends React.Component {
         }
       })
       .catch(function (error) {
-              console.log(error);
+        console.log(error);
+        alert("Login failed, please check the credentials and try again!")
       });
        e.preventDefault();
-
   }
 
   render() {
@@ -130,7 +130,6 @@ class Login extends React.Component {
         <div className="login-menu">
           <form className="demoForm" onSubmit={this.handleSubmit}>
          
-
             <div >
               <input type="email" required name="email"
                 placeholder="Email"
