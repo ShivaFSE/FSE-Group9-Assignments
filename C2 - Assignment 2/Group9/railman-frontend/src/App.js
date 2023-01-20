@@ -1,5 +1,6 @@
 import './App.css';
 import React from 'react';
+import { isCustomerLogin } from './components/Common';
 import { Route, BrowserRouter } from "react-router-dom";
 import Home from './components/Home';
 import Login from './components/Login.js';
@@ -11,6 +12,7 @@ import Restaurants from './components/Restaurants';
 import Menu from './components/Menu';
 import AddRestaurant from './components/AddRestaurant';
 import AddMenuItem from './components/AddMenuItem';
+import Cart from './components/Cart';
 
 class App extends React.Component {
 
@@ -31,6 +33,7 @@ class App extends React.Component {
               <li  ><a href="/">Login</a></li>
               <li  ><a href="/Restaurants">Restaurants</a></li>
               <li  ><a href="/Orders">Orders</a></li>
+              {isCustomerLogin() ? <li  ><a href="/Cart">Cart</a></li> : null }
               <li  ><a href="/UnderDevelopment">Services</a></li>
               <li  ><a href="/UnderDevelopment">Contact</a></li>
               <li  ><a href="/UnderDevelopment">About</a></li>
@@ -48,6 +51,7 @@ class App extends React.Component {
               <Route path="/Menu" exact component={() => <Menu />} />
               <Route path="/AddRestaurant" exact component={() => <AddRestaurant />} />
               <Route path="/AddMenuItem" exact component={() => <AddMenuItem />} />
+              <Route path="/Cart" exact component={() => <Cart />} />
           </BrowserRouter>
         </div>
 

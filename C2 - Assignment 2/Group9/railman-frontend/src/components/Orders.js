@@ -93,12 +93,12 @@ class Orders extends React.Component {
       .then(data => {
         let allOrdersData = data.map((order) => {
           return {
-            "Order ID": order["Order ID"],
             "Restaurant Name": order["Restaurant Name"],
             "Station Name": order["Station Name"],
             "Ordered Date": order["Ordered Date"],
             "Time": order["Time"],
             "Order Status": order["Order Status"],
+            "Order Total": order["Order Total"],
             "Payment Status": order["Payment Status"],
             "Delivered By": order["Delivered By"]
           }

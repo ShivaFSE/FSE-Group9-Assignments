@@ -55,11 +55,7 @@ class Menu extends React.Component {
     });
   }
 
-  handleMenuItemClick = (item) => {
-    const user = getUser();
-    console.log("in handleMenuItemClick: " + item.id + ", " + item.restaurant_owner_id + ", " + item.Name);
-    if (user.role === JSON.stringify("restaurant_owner")) {
-      console.log("remove Menu item id: " + item.id);
+  removeMenuItem = (item) => {
     var apiBaseUrl = getAppDomain() + "/api/core/menu?id=" + item.id;
     var self = this;
     
@@ -83,9 +79,50 @@ class Menu extends React.Component {
         console.log("")
         console.log(error);
       });
+  }
+
+  addCartItem = (item) => {
+    var apiBaseUrl = getAppDomain() + "/api/core/cart";
+    var self = this;
+    const user = getUser();
+
+    var payload = {
+      "menu_item_id": item.id,
+      "restaurant_id": item.restaurant_id,
+      "customer_id": user.id
+    }
+    
+    axios.post(apiBaseUrl, payload)
+      .then(function (response) {
+        console.log(response);
+        if (response.status === 201) {
+          alert("Cart Item successfull added");
+          self.props.history.push('/Cart');
+        }
+        else if (response.data.code === 204) {
+          console.log("invalid cart item data");
+          alert("invalid cart item data")
+        }
+        else {
+          console.log("User exists");
+          alert("User exist");
+        }
+      })
+      .catch(function (error) {
+        console.log("")
+        console.log(error);
+      });
+  }
+
+  handleMenuItemClick = (item) => {
+    const user = getUser();
+    console.log("in handleMenuItemClick: " + item.id + ", " + item.restaurant_owner_id + ", " + item.Name);
+    if (user.role === JSON.stringify("restaurant_owner")) {
+      console.log("remove Menu item id: " + item.id);
+      this.removeMenuItem(item);
     }
     else if (user.role === JSON.stringify("customer")) {
-      
+      this.addCartItem(item);
     }
   }
 

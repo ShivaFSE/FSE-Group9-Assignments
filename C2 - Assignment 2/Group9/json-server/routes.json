@@ -9,5 +9,8 @@
   "/api/core/restaurants/:Address:restaurant_owner_id": "/restaurants?Address=:Address&restaurant_owner_id=:restaurant_owner_id",
   "/api/core/restaurants\\?id=:id": "/restaurants/:id",
   "/api/core/menu/:restaurant_id": "/menu?restaurant_id=:restaurant_id",
-  "/api/core/menu\\?id=:id": "/menu/:id"
+  "/api/core/menu\\?id=:id": "/menu/:id",
+  "/api/core/cart": "/cart",
+  "/api/core/cart\\?id=:id": "/cart/:id",
+  "/api/core/cart\\?customer_id=:customer_id": "/cart/:customer_id"
 }

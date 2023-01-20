@@ -23,9 +23,11 @@ class MenuTile extends React.Component {
       )
     }
     else if (user.role === JSON.stringify("customer")) {
-      <div>
-        <button className="menu__button" onClick={this.onClickEvent}>Add to cart</button>
-      </div>
+      return (
+        <div>
+          <button className="menu__button" onClick={this.onClickEvent}>Add to cart</button>
+        </div>
+      )
     }
     return null
   }

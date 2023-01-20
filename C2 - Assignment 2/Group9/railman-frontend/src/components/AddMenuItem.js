@@ -138,7 +138,7 @@ class AddMenuItem extends React.Component {
             </div>
             <div>
               <input
-                type="text"
+                type="number"
                 placeholder="Enter Price of Menu item *"
                 name="price"
                 value={this.state.price}
