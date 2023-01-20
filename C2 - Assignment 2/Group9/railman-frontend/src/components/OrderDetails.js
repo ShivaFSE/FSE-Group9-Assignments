@@ -37,6 +37,7 @@ class OrderDetails extends React.Component {
     var self = this;
     var payload = self.state.orderData
     payload["Order Status"] = "Accepted";
+    payload["Payment Status"] = "Completed";
     
     let orderUpdatedData = await axios.put(apiBaseUrl, payload)
     console.log("orderPatchData: ", orderUpdatedData.status);
@@ -52,6 +53,7 @@ class OrderDetails extends React.Component {
     var self = this;
     var payload = self.state.orderData
     payload["Order Status"] = "Rejected";
+    payload["Payment Status"] = "Refunded";
     
     let orderUpdatedData = await axios.put(apiBaseUrl, payload)
     console.log("orderPatchData: ", orderUpdatedData.status);
@@ -64,8 +66,10 @@ class OrderDetails extends React.Component {
   addAcceptAndRejectButtons() {
     return (
       <div className='user-button-menu'>
-        <input type="button" onClick={this.handleAcceptOrder} value="Accept" />
-        <input type="button" onClick={this.handleRejectOrder} value="Reject" />
+        { (this.state.orderData["Order Status"] === "Pending" || this.state.orderData["Order Status"] === "Rejected") ? 
+        <input type="button" onClick={this.handleAcceptOrder} value="Accept" /> : null }
+        { (this.state.orderData["Order Status"] === "Pending" || this.state.orderData["Order Status"] === "Accepted") ? 
+        <input type="button" onClick={this.handleRejectOrder} value="Reject" /> : null }
       </div>
     )
   }
