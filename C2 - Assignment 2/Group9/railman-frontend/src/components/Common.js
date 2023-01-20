@@ -49,6 +49,16 @@ export const isCustomerLogin = () => {
   return false;
 }
 
+export const isRestaurantOwnerLogin = () => {
+  if (isUserLoggedIn()) {
+    const user = getUser();
+    if (user.role === JSON.stringify("restaurant_owner")) {
+      return true;
+    }
+  }
+  return false;
+}
+
 export const getAppDomain = () => {
   return "http://localhost:8000"
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { isUserLoggedIn, getUser, getAppDomain } from './Common';
+import { isUserLoggedIn, getUser, getAppDomain, isCustomerLogin, isRestaurantOwnerLogin } from './Common';
 import { withRouter } from "react-router-dom";
 import axios from 'axios';
 import './Menu.css';
@@ -81,6 +81,32 @@ class Menu extends React.Component {
       });
   }
 
+  getCartRestaurant = async (newMenuItem) => {
+    let user = getUser()
+    var apiBaseUrl = getAppDomain() + "/cart?"
+    apiBaseUrl = apiBaseUrl + "customer_id=" + user.id;
+
+    let allCartItems = await axios.get(apiBaseUrl);
+    console.log("Existing CartItems: ", allCartItems);
+    if (allCartItems.status === 200) {
+      let cartReceived = allCartItems.data.map((item) => {
+        console.log("item: customer_id: " + item["customer_id"], ", restaurant_id: ", item["restaurant_id"], ", menu_item_id: ", item["menu_item_id"], ", id: ", item["id"]);
+        return {
+          "restaurant_id": item["restaurant_id"]
+        }
+      });
+
+      if (cartReceived.length > 0) {
+        console.log("cart restaurant_id: " + cartReceived[0].restaurant_id, ", new restaurant_id: ", newMenuItem.restaurant_id);
+        if (cartReceived[0].restaurant_id === newMenuItem.restaurant_id) {
+          return true;
+        }
+      }
+    }
+    console.log("returning false");
+    return false;
+  }
+
   addCartItem = (item) => {
     var apiBaseUrl = getAppDomain() + "/api/core/cart";
     var self = this;
@@ -114,15 +140,19 @@ class Menu extends React.Component {
       });
   }
 
-  handleMenuItemClick = (item) => {
-    const user = getUser();
+  handleMenuItemClick = async (item) => {
     console.log("in handleMenuItemClick: " + item.id + ", " + item.restaurant_owner_id + ", " + item.Name);
-    if (user.role === JSON.stringify("restaurant_owner")) {
+    if (isRestaurantOwnerLogin()) {
       console.log("remove Menu item id: " + item.id);
       this.removeMenuItem(item);
     }
-    else if (user.role === JSON.stringify("customer")) {
-      this.addCartItem(item);
+    else if (isCustomerLogin()) {
+      if(await this.getCartRestaurant(item) === true) {
+        this.addCartItem(item);
+      }
+      else {
+        alert("The Cart has items already from a different Restaurant");
+      }
     }
   }
 
@@ -130,15 +160,14 @@ class Menu extends React.Component {
     return this.state.menuData.map((item) => {
       if(item.Name !== null && item.Timings !== null && item.Price !== null)
       {
-        return <MenuTile details={item} onClickEvent={this.handleMenuItemClick}></MenuTile>
+        return <MenuTile details={{...item, "button_title": isRestaurantOwnerLogin() ? "Remove Item" : "Add to cart"}} onClickEvent={this.handleMenuItemClick}></MenuTile>
       }
       return <div />
     })
   }
 
   addRemoveRestaurantOrAddMenuItemButton() {
-    const user = getUser();
-    if (user.role === JSON.stringify("restaurant_owner")) {
+    if (isRestaurantOwnerLogin()) {
       return (
         <div className='user-button-menu'>
           <input type="button" onClick={this.handleRemoveRestaurant} value="Remove Restaurant" />
@@ -179,8 +208,6 @@ class Menu extends React.Component {
       return
     }
 
-    // Revert back to correct api method when Backend is built
-    //var apiBaseUrl = "http://localhost:8000/api/core/menu"
     var apiBaseUrl = getAppDomain() + "/menu?"
     apiBaseUrl = apiBaseUrl + "restaurant_id=" + restaurant_id;
 

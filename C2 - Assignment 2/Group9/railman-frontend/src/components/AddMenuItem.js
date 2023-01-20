@@ -43,8 +43,8 @@ class AddMenuItem extends React.Component {
         fieldValidationErrors.name = nameValid ? '' : ' is too short';
         break;
       case 'price':
-        priceValid = value.length >= 1;
-        fieldValidationErrors.price = priceValid ? '' : 'is too short';
+        priceValid = value.match(/^(\d*([.,](?=\d{3}))?\d+)+((?!\2)[.,]\d\d)?$/);
+        fieldValidationErrors.price = priceValid ? '' : 'is not valid';
         break;
       case 'timings':
         timingsValid = value.length >= 1;
@@ -138,7 +138,7 @@ class AddMenuItem extends React.Component {
             </div>
             <div>
               <input
-                type="number"
+                type="text"
                 placeholder="Enter Price of Menu item *"
                 name="price"
                 value={this.state.price}

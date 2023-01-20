@@ -1,5 +1,5 @@
 import React from 'react';
-import { isUserLoggedIn, getAppDomain, getUser } from './Common';
+import { isUserLoggedIn, getAppDomain, getUser, isCustomerLogin } from './Common';
 import { withRouter } from "react-router-dom";
 import axios from 'axios';
 import './Menu.css';
@@ -10,6 +10,7 @@ class Cart extends React.Component {
     super(props);
 
     this.handlePlaceOrder = this.handlePlaceOrder.bind(this);
+    this.handleMenuItemClick = this.handleMenuItemClick.bind(this);
 
     this.state = {
       cartData: [],
@@ -53,7 +54,7 @@ class Cart extends React.Component {
     var self = this;
     let user = getUser();
 
-    let orderTotal = this.state.cartData.reduce((n, {Price}) => n + Price, 0);
+    let orderTotal = this.state.cartData.reduce((n, {Price}) => n + parseInt(Price), 0);
 
     console.log("restaurant: Name: ", this.state.restaurantData.Name, ", Address: ", this.state.restaurantData.Address, ", restaurant_owner_id: ", this.state.restaurantData.restaurant_owner_id, ", order total: ", orderTotal);
     var date = new Date();
@@ -76,7 +77,6 @@ class Cart extends React.Component {
       .then(function (response) {
         console.log(response);
         if (response.status === 201) {
-          // alert("Order successfull placed");
           console.log("clearing Cart");
           self.clearCart();
           self.props.history.push('/Orders');
@@ -98,11 +98,19 @@ class Cart extends React.Component {
     e.preventDefault();
   }
 
+  handleMenuItemClick = (item) => {
+    console.log("in handleMenuItemClick: " + item.id + ", " + item.restaurant_owner_id + ", " + item.Name);
+    if (isCustomerLogin()) {
+      this.deleteCartItem(item.cart_id);
+      window.location.reload(false);
+    }
+  }
+
   addCartTiles() {
     return this.state.cartData.map((item) => {
       if(item.Name !== null && item.Timings !== null && item.Price !== null)
       {
-        return <MenuTile details={item} onClickEvent={this.handleMenuItemClick}></MenuTile>
+        return <MenuTile details={{...item, "button_title":"Remove Item"}} onClickEvent={this.handleMenuItemClick}></MenuTile>
       }
       return <div />
     })
