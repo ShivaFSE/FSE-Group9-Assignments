@@ -93,6 +93,7 @@ class DashboardC extends React.Component {
         .filter(order => order["Order Status"] === "Active")
         .map((order) => {
             return {
+              "id": order["id"],
               "Restaurant Name": order["Restaurant Name"],
               "Station Name": order["Station Name"],
               "Ordered Date": order["Ordered Date"],

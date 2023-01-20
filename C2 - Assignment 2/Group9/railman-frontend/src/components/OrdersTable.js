@@ -54,9 +54,7 @@ export default class OrdersTable extends React.Component {
       return false
     
     }).map((row, index) => {
-
       return <tr key={index}><RenderRow key={index} data={row} keys={keys} /></tr>
-
     })
 
     return (
@@ -78,9 +76,9 @@ export default class OrdersTable extends React.Component {
 }
 
 const RenderRow = (props) => {
-  let url="./createService";
+  let url="./OrderDetails?id=" + props.data["id"];
   return props.keys.map((key, index) => {
-    if(key==="Order ID" || key==="Restaurant Name")
+    if(key === "id" || key === "Restaurant Name")
     {
         return <td key={props.data[key]}><a href={url}>{props.data[key]}</a></td>
     }

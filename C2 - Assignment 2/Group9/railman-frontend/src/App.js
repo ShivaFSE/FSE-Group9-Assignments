@@ -13,6 +13,7 @@ import Menu from './components/Menu';
 import AddRestaurant from './components/AddRestaurant';
 import AddMenuItem from './components/AddMenuItem';
 import Cart from './components/Cart';
+import OrderDetails from './components/OrderDetails';
 
 class App extends React.Component {
 
@@ -52,6 +53,7 @@ class App extends React.Component {
               <Route path="/AddRestaurant" exact component={() => <AddRestaurant />} />
               <Route path="/AddMenuItem" exact component={() => <AddMenuItem />} />
               <Route path="/Cart" exact component={() => <Cart />} />
+              <Route path="/OrderDetails" exact component={() => <OrderDetails />} />
           </BrowserRouter>
         </div>
 

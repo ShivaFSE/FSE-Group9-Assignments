@@ -93,6 +93,7 @@ class Orders extends React.Component {
       .then(data => {
         let allOrdersData = data.map((order) => {
           return {
+            "id": order["id"],
             "Restaurant Name": order["Restaurant Name"],
             "Station Name": order["Station Name"],
             "Ordered Date": order["Ordered Date"],
@@ -115,9 +116,6 @@ class Orders extends React.Component {
     if(isUserLoggedIn()) {
       console.log("User is " + getUser().name);
       this.fetchOrdersData();
-
-      // var orders = fetchUserOrders(this.props.role).then(this.setState({ tableData: orders }));
-      // this.setState({ tableData: orders });
     }
     else {
       console.log("User is not logged in");
