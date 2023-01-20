@@ -14,7 +14,7 @@ class MenuTile extends React.Component {
   }
 
   addCartOrRemoveItemButton() {
-    if (isUserLoggedIn()) {
+    if (isUserLoggedIn() && this.props.details.button_title != null) {
       return (
         <div>
           <button className="menu__button" onClick={this.onClickEvent}>{this.props.details.button_title}</button>

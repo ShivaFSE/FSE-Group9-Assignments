@@ -2,6 +2,7 @@ import React from 'react';
 import { isUserLoggedIn, getAppDomain } from './Common';
 import { withRouter } from "react-router-dom";
 import axios from 'axios';
+import MenuTile from './MenuTile';
 import './OrderDetails.css';
 
 class OrderDetails extends React.Component {
@@ -23,8 +24,10 @@ class OrderDetails extends React.Component {
         "Delivered By": '',
         "customer_id": '',
         "restaurant_owner_id": '',
+        "items": [],
         "id": ''
-      }
+      },
+      orderItemDetails: []
     }
   }
 
@@ -58,13 +61,6 @@ class OrderDetails extends React.Component {
     e.preventDefault();
   }
 
-  addMenuTiles() {
-    return (
-    <div className="menu_details">
-      <h3 className="menu__name">{this.state.orderData["Restaurant Name"]}</h3>
-    </div>)
-  }
-
   addAcceptAndRejectButtons() {
     return (
       <div className='user-button-menu'>
@@ -72,6 +68,16 @@ class OrderDetails extends React.Component {
         <input type="button" onClick={this.handleRejectOrder} value="Reject" />
       </div>
     )
+  }
+
+  addOrderItemTiles() {
+    return this.state.orderItemDetails.map((item) => {
+      if(item.Name !== null)
+      {
+        return <MenuTile details={{...item}} onClickEvent={this.handleMenuItemClick}></MenuTile>
+      }
+      return <div />
+    })
   }
 
   render() {
@@ -88,13 +94,49 @@ class OrderDetails extends React.Component {
       <div className="dashboard-container">
         <h2>Order Details</h2>
         {this.addAcceptAndRejectButtons()}
-        <section className="menu section bd-container" id="menu">
-          <div className="menu__container">
-            {this.addMenuTiles()}
-          </div>
-        </section>
+        <div className="order-details-container">
+          <section className="menu section bd-container" id="menu">
+            <div className="menu_details">
+              <h3><br/><br/><br/>{"Restaurant Name: " + this.state.orderData["Restaurant Name"]}</h3>
+              <h3 className="order_details">{"Order Total: " + this.state.orderData["Order Total"]}<br/><br/><br/></h3>
+              <label className="order_details">{"Ordered Date: " + this.state.orderData["Ordered Date"] + ", " + this.state.orderData["Time"]}</label>
+              <label className="order_details">{"Order Status: " + this.state.orderData["Order Status"]}</label>
+              <label className="order_details">{"Payment Status: " + this.state.orderData["Payment Status"]}</label>
+              <label className="order_details">{"Station Name: " + this.state.orderData["Station Name"]}</label>
+              <label className="order_details">{"Delivered By: " + this.state.orderData["Delivered By"]}</label>
+              <h3 className="order_details"><br/><br/><br/>{"Ordered Items: "}<br/><br/></h3>
+              {this.addOrderItemTiles()}
+            </div>
+          </section>
+        </div>
       </div>
     );
+  }
+
+  async getOrderItemsData(orderDetails) {
+    console.log("in getOrderItemsData");
+
+    var allOrderDetails = [];
+    
+    for (let item = 0; item < orderDetails[0].items.length; item++) {
+      let orderItem = orderDetails[0].items[item];
+      if (orderItem.menu_item_id != null) {
+        var apiBaseUrl = getAppDomain() + "/menu?";
+        apiBaseUrl = apiBaseUrl + "id=" + orderItem.menu_item_id + "&restaurant_id=" + orderDetails[0].restaurant_id;
+        console.log("apiBaseUrl-------: ", apiBaseUrl);
+
+        let orderDetailsData = await axios.get(apiBaseUrl);
+        console.log("orderDetailsData: ", orderDetailsData);
+        if (orderDetailsData.status === 200) {
+          allOrderDetails.push({...orderDetailsData.data[0]});
+        }
+        else {
+          alert("Failed to get Order details, try again later!");
+          this.props.history.push('/Orders');
+        }
+      }
+    }
+    return allOrderDetails;
   }
 
   async fetcOrderData(order_id) {
@@ -121,13 +163,17 @@ class OrderDetails extends React.Component {
           "Payment Status": item["Payment Status"],
           "Delivered By": item["Delivered By"],
           "customer_id": item["customer_id"],
+          "restaurant_id": item["restaurant_id"],
           "restaurant_owner_id": item["restaurant_owner_id"],
+          "items": item["items"],
           "id": item["id"]
         }
       });
 
-      console.log("order call setting state");
-      this.setState({ orderData: orderDetails[0] });
+      console.log("order details received: " + orderDetails[0]["items"].length);
+      let orderItemsInfo = await this.getOrderItemsData(orderDetails);
+      console.log("order items received: " + orderItemsInfo.length);
+      this.setState({ orderData: orderDetails[0], orderItemDetails: orderItemsInfo });
     }
     console.log("order call done");
   }

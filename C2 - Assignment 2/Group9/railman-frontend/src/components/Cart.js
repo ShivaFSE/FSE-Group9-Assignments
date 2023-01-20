@@ -56,7 +56,7 @@ class Cart extends React.Component {
 
     let orderTotal = this.state.cartData.reduce((n, {Price}) => n + parseInt(Price), 0);
 
-    console.log("restaurant: Name: ", this.state.restaurantData.Name, ", Address: ", this.state.restaurantData.Address, ", restaurant_owner_id: ", this.state.restaurantData.restaurant_owner_id, ", order total: ", orderTotal);
+    console.log("restaurant: Name: ", this.state.restaurantData.Name, ", id: ", this.state.restaurantData.id, ", Address: ", this.state.restaurantData.Address, ", restaurant_owner_id: ", this.state.restaurantData.restaurant_owner_id, ", order total: ", orderTotal);
     var date = new Date();
     let dateString = new Date(date.getTime() - (date.getTimezoneOffset() * 60000 )).toISOString().split("T")[0];
     let timeString = date.getHours() + ":" + ("00" + date.getMinutes()).slice(-2)
@@ -65,12 +65,18 @@ class Cart extends React.Component {
       "Station Name": this.state.restaurantData.Address,
       "Ordered Date": dateString,
       "Time": timeString,
-      "Order Status": "Active",
+      "Order Status": "Pending",
       "Order Total": `₹ ${orderTotal}`,
-      "Payment Status": "Pending",
-      "Delivered By": "Satish",
+      "Payment Status": "Completed",
+      "Delivered By": "Mr. India",
       "customer_id": user.id,
-      "restaurant_owner_id": this.state.restaurantData.restaurant_owner_id
+      "restaurant_id": this.state.restaurantData.id,
+      "restaurant_owner_id": this.state.restaurantData.restaurant_owner_id,
+      "items": this.state.cartData.map((item) => {
+        return {
+          "menu_item_id": item["id"]
+        }
+      })
     }
     
     axios.post(apiBaseUrl, payload)

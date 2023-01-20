@@ -104,7 +104,10 @@ class Menu extends React.Component {
       }
     }
     console.log("returning false");
-    return false;
+    if (allCartItems.length > 0) 
+      return false;
+    else 
+      return true;
   }
 
   addCartItem = (item) => {
