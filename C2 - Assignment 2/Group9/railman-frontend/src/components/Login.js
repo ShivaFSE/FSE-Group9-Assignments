@@ -12,11 +12,11 @@ class Login extends React.Component {
       users: [],
       email: '',
       password: '',
-      UserType: 'customer',
-      RegisterUserType: 'customer',
-      formErrors: { email: '', password: '' },
+      UserType: '',
+      formErrors: { email: '', password: '', userType: ' choose user type' },
       emailValid: false,
       passwordValid: false,
+      userTypeValid: false,
       formValid: false,
     }
   }
@@ -29,15 +29,24 @@ class Login extends React.Component {
   }
 
   onValueChange = (e) => {
+    let fieldValidationErrors = this.state.formErrors;
+    let emailValid = this.state.emailValid;
+    let passwordValid = this.state.passwordValid;
+    fieldValidationErrors.userType = '';
     this.setState({
-      UserType: e.target.value
-    })
+      UserType: e.target.value,
+      formErrors: fieldValidationErrors,
+      emailValid: emailValid,
+      passwordValid: passwordValid,
+      userTypeValid: true
+    }, this.validateForm);
   }
 
   validateField(fieldName, value) {
     let fieldValidationErrors = this.state.formErrors;
     let emailValid = this.state.emailValid;
     let passwordValid = this.state.passwordValid;
+    let userTypeValid = this.state.userTypeValid;
 
     switch (fieldName) {
       case 'email':
@@ -54,12 +63,13 @@ class Login extends React.Component {
     this.setState({
       formErrors: fieldValidationErrors,
       emailValid: emailValid,
-      passwordValid: passwordValid
+      passwordValid: passwordValid,
+      userTypeValid: userTypeValid
     }, this.validateForm);
   }
 
   validateForm() {
-    this.setState({ formValid: this.state.emailValid && this.state.passwordValid });
+    this.setState({ formValid: this.state.emailValid && this.state.passwordValid && this.state.userTypeValid });
   }
 
   errorClass(error) {
@@ -116,7 +126,6 @@ class Login extends React.Component {
   render() {
     console.log("In Login.js " + getUser().id + ", " + getUser().name + ", " + getUser().address);
     if(isUserLoggedIn()) {
-      console.log("User is " + getUser().name);
       return (<div className="dashboard-container">
         {this.props.history.push('/Dashboard')}
       </div>)
@@ -145,16 +154,15 @@ class Login extends React.Component {
             </div>
 
             <div >
-              <input type="radio" value="customer"
-                checked={this.state.UserType === "customer"}
+              <input type="radio" value="customer" checked={this.state.UserType === "customer"}
                 onChange={this.onValueChange} />
               <label htmlFor="Customer">Customer</label>
               <input type="radio" value="restaurant_owner" checked={this.state.UserType === "restaurant_owner"}
                 onChange={this.onValueChange} />
               <label htmlFor="RestaurantOwner">Restaurant Owner</label>
             </div>
-            <input type='submit' name='Login' value='Login' disabled={!this.state.formValid} />
 
+            <input type='submit' name='Login' value='Login' disabled={!this.state.formValid} />
 
             <div className='error-message' >
               <FormErrors formErrors={this.state.formErrors} />
@@ -171,7 +179,6 @@ class Login extends React.Component {
             </form>
           </div>
 
-        
       </div>
     )
   }
