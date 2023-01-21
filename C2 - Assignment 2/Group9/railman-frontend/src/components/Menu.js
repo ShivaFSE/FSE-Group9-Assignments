@@ -113,7 +113,7 @@ class Menu extends React.Component {
     console.log("responseData Status: ", responseData.status);
     if (responseData.status === 201) {
       alert("Cart Item successfull added");
-      self.props.history.push('/Cart');
+      //self.props.history.push('/Cart');
     }
     else if (responseData.status === 204) {
       console.log("invalid cart item data");

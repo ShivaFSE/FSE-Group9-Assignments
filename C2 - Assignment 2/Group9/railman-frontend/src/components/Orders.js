@@ -22,7 +22,7 @@ class Orders extends React.Component {
   }
 
   handleCart = (e) => {
-    this.props.history.push('/UnderDevelopment');
+    this.props.history.push('/Cart');
     e.preventDefault();
   }
 

@@ -18,7 +18,7 @@ import OrderDetails from './components/OrderDetails';
 class App extends React.Component {
 
   constructor(props) {
-    super(props);
+    super(props);    
     this.state = {
      
     }
