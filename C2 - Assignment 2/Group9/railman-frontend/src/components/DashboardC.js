@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 import OrdersTable from "./OrdersTable";
 import './Orders.css';
 
-class DashboardC extends React.Component {
+class Dashboard extends React.Component {
   constructor(props) {
     super(props);
 
@@ -123,4 +123,4 @@ class DashboardC extends React.Component {
   }
 }
 
-export default withRouter(DashboardC);
+export default withRouter(Dashboard);

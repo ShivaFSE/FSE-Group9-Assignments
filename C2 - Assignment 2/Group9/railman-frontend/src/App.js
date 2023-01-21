@@ -6,7 +6,7 @@ import Home from './components/Home';
 import Login from './components/Login.js';
 import Registration from "./components/Registration";
 import UnderDevelopment from "./components/UnderDevelopment";
-import DashboardC from './components/DashboardC';
+import Dashboard from './components/Dashboard';
 import Orders from './components/Orders';
 import Restaurants from './components/Restaurants';
 import Menu from './components/Menu';
@@ -46,7 +46,7 @@ class App extends React.Component {
               <Route path="/" exact component={() => <Login />} />
               <Route path="/registration" component={Registration} />
               <Route path="/UnderDevelopment" component={UnderDevelopment} />
-              <Route path="/DashboardC" exact component={() => <DashboardC />} />
+              <Route path="/Dashboard" exact component={() => <Dashboard />} />
               <Route path="/Orders" exact component={() => <Orders />} />
               <Route path="/Restaurants" exact component={() => <Restaurants />} />
               <Route path="/Menu" exact component={() => <Menu />} />

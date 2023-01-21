@@ -90,11 +90,11 @@ class Login extends React.Component {
           console.log("Login successfull");
 
           if (response.data[0].role === "customer") {
-            self.props.history.push('/DashboardC');
+            self.props.history.push('/Dashboard');
           }
           else
             if (response.data[0].role === "restaurant_owner") {
-              self.props.history.push('/DashboardC');
+              self.props.history.push('/Dashboard');
             }
         }
         else if (response.data.code === 204) {
@@ -118,7 +118,7 @@ class Login extends React.Component {
     if(isUserLoggedIn()) {
       console.log("User is " + getUser().name);
       return (<div className="dashboard-container">
-        {this.props.history.push('/DashboardC')}
+        {this.props.history.push('/Dashboard')}
       </div>)
     }
     else {
