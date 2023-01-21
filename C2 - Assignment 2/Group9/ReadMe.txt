@@ -1,7 +1,7 @@
 This project only has React UI components with out a backend, hence it takes help from json-server npm module to mock backend data. To start backend mocking run following command which will start the json server on port 8000. And then start the actual React app using "npm start".
 
 To start the json-server locally
-npx json-server --port 8000 --routes routes.json --watch db.json
+npx json-server --host 0.0.0.0 --port 8000 --routes routes.json --watch db.json
 
 To start the React app
 npm start
