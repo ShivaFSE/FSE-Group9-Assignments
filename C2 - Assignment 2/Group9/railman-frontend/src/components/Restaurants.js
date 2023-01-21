@@ -18,11 +18,11 @@ class Restaurants extends React.Component {
     }
   }
 
-  handleRestaurantClick = (event) => {
-    console.log("in handleRestaurantClick: " + event);
+  handleRestaurantClick = (restaurant_id, restaurant_name) => {
+    console.log("in handleRestaurantClick: " + restaurant_id);
     this.props.history.push({
       pathname: '/Menu',
-      state: { restaurant_id: event }
+      state: { restaurant_id: restaurant_id, restaurant_name: restaurant_name }
     });
   }
 

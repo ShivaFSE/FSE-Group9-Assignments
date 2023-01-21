@@ -9,7 +9,7 @@ class RestaurantTile extends React.Component {
   }
 
   onClickEvent(event) {
-    this.props.onClickEvent(this.props.details.id);
+    this.props.onClickEvent(this.props.details.id, this.props.details.Name);
   }
 
   render() {

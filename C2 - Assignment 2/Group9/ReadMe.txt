@@ -10,11 +10,13 @@ npm start
 
 EPIC 1 Assumptions:
 1. /api/authentication/login POST API has been replaced by /api/authentication/registration GET API to consume json-server mock API. Once the backend is ready it will be replaced by the intended method.
+2. Because the username is sent as attribute in GET API, they are case sensitive.
+3. Because the password is sent as attribute in GET API, all the special charecters are not supported. 
 
 
 
 EPIC 2, User Story 2.2 Assumptions:
-1. Because we are using mock json server, the restaurant filtering works only when exact location name is specified(including case).
+1. Because we are using mock json server, the restaurant filtering shows the results only after complete exact location is entered in input field(including case).
 
 
 

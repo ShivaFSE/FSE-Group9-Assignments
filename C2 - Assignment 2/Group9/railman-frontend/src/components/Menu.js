@@ -100,7 +100,6 @@ class Menu extends React.Component {
 
   addCartItem = async (item) => {
     var apiBaseUrl = getAppDomain() + "/api/core/cart";
-    var self = this;
     const user = getUser();
 
     var payload = {
@@ -174,7 +173,7 @@ class Menu extends React.Component {
 
     return (
       <div className="dashboard-container">
-        <h2>Menu</h2>
+        <h2>{this.props.location.state?.restaurant_name}</h2>
         {this.addRemoveRestaurantOrAddMenuItemButton()}
         <section className="menu section bd-container" id="menu">
           <div className="menu__container">
