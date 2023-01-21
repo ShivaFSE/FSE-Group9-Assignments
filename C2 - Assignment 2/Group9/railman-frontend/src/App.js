@@ -25,6 +25,7 @@ class App extends React.Component {
   }
 
   render() {
+    console.log("In App.js");
     return (
       <div className="container">
         <h1 className='App-header title'>Railman</h1>

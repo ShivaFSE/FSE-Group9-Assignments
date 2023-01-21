@@ -80,7 +80,7 @@ class AddRestaurant extends React.Component {
       () => { this.validateField(name, value) });
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     console.log("handleSubmit restaurant_owner_id: " + this.props.location.state?.restaurant_owner_id);
     var apiBaseUrl = getAppDomain() + "/api/core/restaurants";
     var self = this;
@@ -93,27 +93,21 @@ class AddRestaurant extends React.Component {
       "restaurant_owner_id": this.props.location.state?.restaurant_owner_id,
     }
     
-    axios.post(apiBaseUrl, payload)
-      .then(function (response) {
-        console.log(response);
-        if (response.status === 201) {
-          alert("Restaurant successfull added");
-          console.log("Adding Restaurant successfull");
-          self.props.history.push('/Restaurants');
-        }
-        else if (response.data.code === 204) {
-          console.log("invalid restaurant data");
-          alert("invalid restaurant data")
-        }
-        else {
-          console.log("User exists");
-          alert("User exist");
-        }
-      })
-      .catch(function (error) {
-        console.log("")
-        console.log(error);
-      });
+    let responseData = await axios.post(apiBaseUrl, payload)
+    console.log("responseData Status: ", responseData.status);
+    if (responseData.status === 201) {
+      alert("Restaurant successfull added");
+      console.log("Adding Restaurant successfull");
+      self.props.history.push('/Restaurants');
+    }
+    else if (responseData.status === 204) {
+      console.log("invalid restaurant data");
+      alert("invalid restaurant data")
+    }
+    else {
+      console.log("User exists");
+      alert("User exist");
+    }
 
     e.preventDefault();
   }

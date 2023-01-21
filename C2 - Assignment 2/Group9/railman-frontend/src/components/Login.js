@@ -80,9 +80,11 @@ class Login extends React.Component {
     this.props.history.push('/registration');
     e.preventDefault();
   }
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     var apiBaseUrl = getAppDomain() + "/api/authentication/";
     var self = this;
+
+    console.log("Login: " + this.state.email + ", " + this.state.password + ", " + this.state.UserType);
 
     // Revert back to post method when Backend is built
     // var payload = {
@@ -91,36 +93,31 @@ class Login extends React.Component {
     //   "role": this.state.UserType
     // }
     // axios.post(apiBaseUrl + 'login', payload)
-    axios.get(apiBaseUrl + 'registration?email=' + this.state.email + "&password=" + this.state.password + "&role=" + this.state.UserType)
-      .then(function (response) {
-       
-        self.setState({users:response.data});
-        setUserSession(response.data[0].id, response.data[0].name, response.data[0].address, response.data[0].role);
-        if (response.status === 200) {
-          console.log("Login successfull");
+    let responseData = await axios.get(apiBaseUrl + 'registration?email=' + this.state.email + "&password=" + this.state.password + "&role=" + this.state.UserType)
+    console.log("responseData Status : " + responseData.status);
+    self.setState({ users: responseData.data });
+    setUserSession(responseData.data[0].id, responseData.data[0].name, responseData.data[0].address, responseData.data[0].role);
 
-          if (response.data[0].role === "customer") {
-            self.props.history.push('/Dashboard');
-          }
-          else
-            if (response.data[0].role === "restaurant_owner") {
-              self.props.history.push('/Dashboard');
-            }
-        }
-        else if (response.data.code === 204) {
-          console.log("emailid and pwd  do not match");
-          alert("emailid and pwd  do not match")
-        }
-        else {
-          console.log("User does not exists");
-          alert("User does not exist");
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-        alert("Login failed, please check the credentials and try again!")
-      });
-       e.preventDefault();
+    if (responseData.status === 200) {
+      console.log("Login.successfull " + getUser().id + ", " + getUser().name + ", " + getUser().address);
+
+      if (responseData.data[0].role === "customer") {
+        self.props.history.push('/Dashboard');
+      }
+      else if (responseData.data[0].role === "restaurant_owner") {
+        self.props.history.push('/Dashboard');
+      }
+    }
+    else if (responseData.status === 204) {
+      console.log("emailid and pwd  do not match");
+      alert("emailid and pwd  do not match")
+    }
+    else {
+      console.log("User does not exists");
+      alert("User does not exist");
+    }
+
+    e.preventDefault();
   }
 
   render() {
@@ -184,4 +181,5 @@ class Login extends React.Component {
   }
 
 }
+
 export default withRouter(Login);

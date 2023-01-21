@@ -102,7 +102,8 @@ class Registration extends React.Component {
       () => { this.validateField(name, value) });
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
+    console.log("in handleSubmit");
     var apiBaseUrl = getAppDomain() + "/api/authentication/";
     var self = this;
     var payload = {
@@ -116,31 +117,25 @@ class Registration extends React.Component {
       "pincode": this.state.pincode,
     }
 
-    axios.post(apiBaseUrl + 'registration', payload)
-      .then(function (response) {
-        console.log(response);
-        if (response.status === 201) {
-          alert("Registration successfull.Login Again");
-          console.log("Registration successfull");
-          self.props.history.push('/');
-        }
-        else if (response.data.code === 204) {
-          console.log("invalid data");
-          alert("invalid data")
-        }
-        else {
-          console.log("User  exists");
-          alert("User  exist");
-        }
+    console.log("user role: " + this.state.role);
 
-      })
-      .catch(function (error) {
-        console.log("")
-        console.log(error);
-      });
+    let responseData = await axios.post(apiBaseUrl + 'registration', payload)
+    console.log("responseData Status: ", responseData.status);
+    if (responseData.status === 201) {
+      alert("Registration successfull.Login Again");
+      console.log("Registration successfull");
+      self.props.history.push('/');
+    }
+    else if (responseData.status === 204) {
+      console.log("invalid data");
+      alert("invalid data")
+    }
+    else {
+      console.log("User  exists");
+      alert("User  exist");
+    }
 
     e.preventDefault();
-
   }
 
   render() {

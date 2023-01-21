@@ -51,7 +51,7 @@ class Restaurants extends React.Component {
     return this.state.restaurantData.map((restaurant) => {
       if(restaurant.Name !== null && restaurant.Timings !== null && restaurant.Description !== null)
       {
-        return <RestaurantTile details={restaurant} onClickEvent={this.handleRestaurantClick}></RestaurantTile>
+        return <RestaurantTile key={restaurant.id} details={restaurant} onClickEvent={this.handleRestaurantClick}></RestaurantTile>
       }
       return <div />
     })
@@ -60,8 +60,8 @@ class Restaurants extends React.Component {
   addNewRestaurantButton() {
     if (isRestaurantOwnerLogin()) {
       return (
-      <div className='user-menu'>
-        <input type="button" onClick={this.addNewRestaurant} value="Add a Restaurant" />
+        <div className='user-menu'>
+          <input type="button" onClick={this.addNewRestaurant} value="Add a Restaurant" />
         </div>
       )
     }
@@ -96,9 +96,9 @@ class Restaurants extends React.Component {
     
     // Revert back to correct api method when Backend is built
     //var apiBaseUrl = "http://localhost:8000/api/core/restaurants"
-    var apiBaseUrl = getAppDomain() + "/restaurants"
+    var apiBaseUrl = getAppDomain() + "/restaurants?"
     if (location !== "") {
-      apiBaseUrl = apiBaseUrl + "?Address=" + location;
+      apiBaseUrl = apiBaseUrl + "Address=" + location;
     }
 
     const user = getUser();

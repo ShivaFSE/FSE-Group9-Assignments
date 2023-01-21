@@ -18,31 +18,25 @@ class Menu extends React.Component {
     }
   }
 
-  handleRemoveRestaurant = (e) => {
+  handleRemoveRestaurant = async (e) => {
     console.log("handleRemoveRestaurant restaurant_id: " + this.props.location.state?.restaurant_id);
     var apiBaseUrl = getAppDomain() + "/api/core/restaurants?id=" + this.props.location.state?.restaurant_id;
     var self = this;
     
-    axios.delete(apiBaseUrl)
-      .then(function (response) {
-        console.log(response);
-        if (response.status === 200) {
-          alert("Restaurant successfull removed");
-          self.props.history.push('/Restaurants');
-        }
-        else if (response.data.code === 204) {
-          console.log("invalid restaurant data");
-          alert("invalid restaurant data")
-        }
-        else {
-          console.log("User exists");
-          alert("User exist");
-        }
-      })
-      .catch(function (error) {
-        console.log("")
-        console.log(error);
-      });
+    let responseData = await axios.delete(apiBaseUrl)
+    console.log("responseData Status: ", responseData.status);
+    if (responseData.status === 200) {
+      alert("Restaurant successfull removed");
+      self.props.history.push('/Restaurants');
+    }
+    else if (responseData.status === 204) {
+      console.log("invalid restaurant data");
+      alert("invalid restaurant data")
+    }
+    else {
+      console.log("User exists");
+      alert("User exist");
+    }
 
     e.preventDefault();
   }
@@ -55,30 +49,24 @@ class Menu extends React.Component {
     });
   }
 
-  removeMenuItem = (item) => {
+  removeMenuItem = async (item) => {
     var apiBaseUrl = getAppDomain() + "/api/core/menu?id=" + item.id;
     var self = this;
     
-    axios.delete(apiBaseUrl)
-      .then(function (response) {
-        console.log(response);
-        if (response.status === 200) {
-          alert("Menu Item successfull removed");
-          self.props.history.push('/Restaurants');
-        }
-        else if (response.data.code === 204) {
-          console.log("invalid restaurant data");
-          alert("invalid restaurant data")
-        }
-        else {
-          console.log("User exists");
-          alert("User exist");
-        }
-      })
-      .catch(function (error) {
-        console.log("")
-        console.log(error);
-      });
+    let responseData = await axios.delete(apiBaseUrl)
+    console.log("responseData Status: ", responseData.status);
+    if (responseData.status === 200) {
+      alert("Menu Item successfull removed");
+      self.props.history.push('/Restaurants');
+    }
+    else if (responseData.status === 204) {
+      console.log("invalid restaurant data");
+      alert("invalid restaurant data")
+    }
+    else {
+      console.log("User exists");
+      alert("User exist");
+    }
   }
 
   getCartRestaurant = async (newMenuItem) => {
@@ -110,7 +98,7 @@ class Menu extends React.Component {
     return false;
   }
 
-  addCartItem = (item) => {
+  addCartItem = async (item) => {
     var apiBaseUrl = getAppDomain() + "/api/core/cart";
     var self = this;
     const user = getUser();
@@ -121,37 +109,31 @@ class Menu extends React.Component {
       "customer_id": user.id
     }
     
-    axios.post(apiBaseUrl, payload)
-      .then(function (response) {
-        console.log(response);
-        if (response.status === 201) {
-          alert("Cart Item successfull added");
-          self.props.history.push('/Cart');
-        }
-        else if (response.data.code === 204) {
-          console.log("invalid cart item data");
-          alert("invalid cart item data")
-        }
-        else {
-          console.log("User exists");
-          alert("User exist");
-        }
-      })
-      .catch(function (error) {
-        console.log("")
-        console.log(error);
-      });
+    let responseData = await axios.post(apiBaseUrl, payload)
+    console.log("responseData Status: ", responseData.status);
+    if (responseData.status === 201) {
+      alert("Cart Item successfull added");
+      self.props.history.push('/Cart');
+    }
+    else if (responseData.status === 204) {
+      console.log("invalid cart item data");
+      alert("invalid cart item data")
+    }
+    else {
+      console.log("User exists");
+      alert("User exist");
+    }
   }
 
   handleMenuItemClick = async (item) => {
     console.log("in handleMenuItemClick: " + item.id + ", " + item.restaurant_owner_id + ", " + item.Name);
     if (isRestaurantOwnerLogin()) {
       console.log("remove Menu item id: " + item.id);
-      this.removeMenuItem(item);
+      await this.removeMenuItem(item);
     }
     else if (isCustomerLogin()) {
       if(await this.getCartRestaurant(item) === true) {
-        this.addCartItem(item);
+        await this.addCartItem(item);
       }
       else {
         alert("The Cart has items already from a different Restaurant");
@@ -163,7 +145,7 @@ class Menu extends React.Component {
     return this.state.menuData.map((item) => {
       if(item.Name !== null && item.Timings !== null && item.Price !== null)
       {
-        return <MenuTile details={{...item, "button_title": isRestaurantOwnerLogin() ? "Remove Item" : "Add to cart"}} onClickEvent={this.handleMenuItemClick}></MenuTile>
+        return <MenuTile key={item.id} details={{...item, "button_title": isRestaurantOwnerLogin() ? "Remove Item" : "Add to cart"}} onClickEvent={this.handleMenuItemClick}></MenuTile>
       }
       return <div />
     })

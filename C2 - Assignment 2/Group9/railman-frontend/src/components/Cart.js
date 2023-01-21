@@ -18,27 +18,22 @@ class Cart extends React.Component {
     }
   }
   
-  deleteCartItem(id) {
-    console.log("clearCart");
+  async deleteCartItem(id) {
+    console.log("deleteCartItem");
     var apiBaseUrl = getAppDomain() + "/api/core/cart?id=" + id;
     
-    axios.delete(apiBaseUrl)
-      .then(function (response) {
-        console.log(response);
-        if (response.status === 200) {
-          console.log("Cart successfull cleared");
-        }
-        else if (response.data.code === 204) {
-          console.log("invalid restaurant data");
-        }
-        else {
-          console.log("User exists");
-        }
-      })
-      .catch(function (error) {
-        console.log("")
-        console.log(error);
-      });
+    let responseData = await axios.delete(apiBaseUrl)
+    console.log("responseData Status: ", responseData);
+
+    if (responseData.status === 200) {
+      console.log("Cart successfull cleared");
+    }
+    else if (responseData.status === 204) {
+      console.log("invalid restaurant data");
+    }
+    else {
+      console.log("User exists");
+    }
   }
 
   clearCart() {
@@ -104,10 +99,10 @@ class Cart extends React.Component {
     e.preventDefault();
   }
 
-  handleMenuItemClick = (item) => {
+  handleMenuItemClick = async (item) => {
     console.log("in handleMenuItemClick: " + item.id + ", " + item.restaurant_owner_id + ", " + item.Name);
     if (isCustomerLogin()) {
-      this.deleteCartItem(item.cart_id);
+      await this.deleteCartItem(item.cart_id);
       window.location.reload(false);
     }
   }
@@ -116,7 +111,7 @@ class Cart extends React.Component {
     return this.state.cartData.map((item) => {
       if(item.Name !== null && item.Timings !== null && item.Price !== null)
       {
-        return <MenuTile details={{...item, "button_title":"Remove Item"}} onClickEvent={this.handleMenuItemClick}></MenuTile>
+        return <MenuTile key={item.id} details={{...item, "button_title":"Remove Item"}} onClickEvent={this.handleMenuItemClick}></MenuTile>
       }
       return <div />
     })
@@ -131,7 +126,6 @@ class Cart extends React.Component {
     }
 
   render() {
-    console.log("In");
     if(!isUserLoggedIn()) {
       return (
         <div className="dashboard-container">

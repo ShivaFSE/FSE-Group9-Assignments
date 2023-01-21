@@ -79,7 +79,7 @@ class AddMenuItem extends React.Component {
       () => { this.validateField(name, value) });
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     console.log("handleSubmit restaurant_id: " + this.props.location.state?.restaurant_id);
     var apiBaseUrl = getAppDomain() + "/api/core/menu";
     var self = this;
@@ -94,28 +94,22 @@ class AddMenuItem extends React.Component {
       "restaurant_id": this.props.location.state?.restaurant_id
     }
     
-    axios.post(apiBaseUrl, payload)
-      .then(function (response) {
-        console.log(response);
-        if (response.status === 201) {
-          alert("Menu Item successfull added");
-          console.log("Adding Menu Item successfull");
-          self.props.history.push('/Restaurants');
-        }
-        else if (response.data.code === 204) {
-          console.log("invalid menu item data");
-          alert("invalid menu item data")
-        }
-        else {
-          console.log("User exists");
-          alert("User exist");
-        }
-      })
-      .catch(function (error) {
-        console.log("")
-        console.log(error);
-      });
-
+    let responseData = await axios.post(apiBaseUrl, payload)
+    console.log("responseData Status: " + responseData.status);
+    if (responseData.status === 201) {
+      alert("Menu Item successfull added");
+      console.log("Adding Menu Item successfull");
+      self.props.history.push('/Restaurants');
+    }
+    else if (responseData.status === 204) {
+      console.log("invalid menu item data");
+      alert("invalid menu item data")
+    }
+    else {
+      console.log("User exists");
+      alert("User exist");
+    }
+    
     e.preventDefault();
   }
 

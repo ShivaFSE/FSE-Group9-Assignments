@@ -104,14 +104,13 @@ class OrderDetails extends React.Component {
     return this.state.orderItemDetails.map((item) => {
       if(item.Name !== null)
       {
-        return <MenuTile details={{...item}} onClickEvent={this.handleMenuItemClick}></MenuTile>
+        return <MenuTile key={item.id} details={{...item}} onClickEvent={this.handleMenuItemClick}></MenuTile>
       }
       return <div />
     })
   }
 
   render() {
-    console.log("In");
     if(!isUserLoggedIn()) {
       return (
         <div className="dashboard-container">
