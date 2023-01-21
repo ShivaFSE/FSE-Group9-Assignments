@@ -182,7 +182,6 @@ class Menu extends React.Component {
   }
 
   render() {
-    console.log("In");
     if(!isUserLoggedIn()) {
       return (
         <div className="dashboard-container">
@@ -204,7 +203,7 @@ class Menu extends React.Component {
     );
   }
 
-  fetchMenuData(restaurant_id) {
+  async fetchMenuData(restaurant_id) {
     
     console.log("selected restaurant_id: " + restaurant_id);
     if (restaurant_id === "") {
@@ -214,35 +213,30 @@ class Menu extends React.Component {
     var apiBaseUrl = getAppDomain() + "/menu?"
     apiBaseUrl = apiBaseUrl + "restaurant_id=" + restaurant_id;
 
-    fetch(apiBaseUrl)
-      .then((response) => {
-        return response.json();
-      })
-      .then(data => {
-        let menuReceived = data.map((item) => {
-          console.log("item: " + item["Name"], item["Price"], item["Timings"], item["id"]);
-          return {
-            "Name": item["Name"],
-            "Logo": item["Logo"],
-            "Price": item["Price"],
-            "Timings": item["Timings"],
-            "restaurant_owner_id": item["restaurant_owner_id"],
-            "restaurant_id": item["restaurant_id"],
-            "id": item["id"]
-          }
-        });
-        this.setState({ menuData: menuReceived });
-        console.log("menuReceived: " + this.state.menuData.length);
-
-      }).catch(error => {
-        console.log(error);
+    let menuReceivedData = await axios.get(apiBaseUrl);
+    console.log("menuReceivedData status: ", menuReceivedData.status);
+    if (menuReceivedData.status === 200) {
+      let menuReceived = menuReceivedData.data.map((item) => {
+        console.log("item: " + item["Name"], item["Price"], item["Timings"], item["id"]);
+        return {
+          "Name": item["Name"],
+          "Logo": item["Logo"],
+          "Price": item["Price"],
+          "Timings": item["Timings"],
+          "restaurant_owner_id": item["restaurant_owner_id"],
+          "restaurant_id": item["restaurant_id"],
+          "id": item["id"]
+        }
       });
+      this.setState({ menuData: menuReceived });
+      console.log("menuReceived: " + this.state.menuData.length);
+    }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     if(isUserLoggedIn()) {
       console.log("user selected restaurant_id : " + this.props.location.state?.restaurant_id);
-      this.fetchMenuData(this.props.location.state?.restaurant_id);
+      await this.fetchMenuData(this.props.location.state?.restaurant_id);
     }
     else {
       console.log("User is not logged in");

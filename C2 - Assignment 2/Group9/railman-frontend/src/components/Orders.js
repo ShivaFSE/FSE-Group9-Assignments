@@ -1,8 +1,9 @@
 import React from 'react';
-import { isUserLoggedIn, getUser, getAppDomain } from './Common';
+import { isUserLoggedIn, getUser, getAppDomain, isCustomerLogin, isRestaurantOwnerLogin } from './Common';
 import { withRouter } from "react-router-dom";
 import OrdersTable from "./OrdersTable";
 import './Orders.css';
+import axios from 'axios';
 
 class Orders extends React.Component {
   constructor(props) {
@@ -58,7 +59,7 @@ class Orders extends React.Component {
           <h3>Welcome {user.name} !</h3>
         </div>
 
-        {user.role === JSON.stringify("customer") ? this.addOrderFoodBox() : null}
+        {isCustomerLogin() ? this.addOrderFoodBox() : null}
 
         {(this.state.tableData.length > 0) ? this.addOrdersTable() : <h2 className='orders-heading'>No Orders!</h2>}
         
@@ -66,18 +67,18 @@ class Orders extends React.Component {
     );
   }
 
-  fetchOrdersData() {
+  async fetchOrdersData() {
     const user = getUser();
 
     // Revert back to correct api method when Backend is built
     //var apiBaseUrl = "http://localhost:8000/api/core/orders"
     var apiBaseUrl = getAppDomain() + "/orders?"
-    if (user.role === JSON.stringify("customer")) {
+    if (isCustomerLogin()) {
       console.log("customer user");
       var customer_id = user.id;
       apiBaseUrl = apiBaseUrl + "customer_id=" + customer_id;
     }
-    else if (user.role === JSON.stringify("restaurant_owner")) {
+    else if (isRestaurantOwnerLogin()) {
       console.log("restaurant_owner user");
       var restaurant_owner_id = user.id;
       apiBaseUrl = apiBaseUrl + "restaurant_owner_id=" + restaurant_owner_id;
@@ -86,39 +87,35 @@ class Orders extends React.Component {
       console.log("incorrect user: " + user.role);
     }
 
-    fetch(apiBaseUrl)
-      .then((response) => {
-        return response.json();
-      })
-      .then(data => {
-        let allOrdersData = data.map((order) => {
-          return {
-            "id": order["id"],
-            "Restaurant Name": order["Restaurant Name"],
-            "Station Name": order["Station Name"],
-            "Ordered Date": order["Ordered Date"],
-            "Time": order["Time"],
-            "Order Status": order["Order Status"],
-            "Order Total": order["Order Total"],
-            "Payment Status": order["Payment Status"],
-            "Delivered By": order["Delivered By"]
-          }
-        });
-
-        allOrdersData.sort((a, b) => Date.parse(`${b["Ordered Date"]} ${b.Time}`) - Date.parse(`${a["Ordered Date"]} ${a.Time}`));
-
-        this.setState({ tableData: allOrdersData });
-        console.log(this.state.tableData);
-
-      }).catch(error => {
-        console.log(error);
+    let allOrdersData = await axios.get(apiBaseUrl);
+    console.log("allOrdersData status: ", allOrdersData.status);
+    if (allOrdersData.status === 200) {
+      let allOrders = allOrdersData.data.map((order) => {
+        return {
+          "id": order["id"],
+          "Restaurant Name": order["Restaurant Name"],
+          "Station Name": order["Station Name"],
+          "Ordered Date": order["Ordered Date"],
+          "Time": order["Time"],
+          "Order Status": order["Order Status"],
+          "Order Total": order["Order Total"],
+          "Payment Status": order["Payment Status"],
+          "Delivered By": order["Delivered By"]
+        }
       });
+
+      allOrders.sort((a, b) => Date.parse(`${b["Ordered Date"]} ${b.Time}`) - Date.parse(`${a["Ordered Date"]} ${a.Time}`));
+
+      this.setState({ tableData: allOrders });
+      console.log(this.state.tableData);
+      console.log("allOrders: " + this.state.tableData.length);
+    }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     if(isUserLoggedIn()) {
       console.log("User is " + getUser().name);
-      this.fetchOrdersData();
+      await this.fetchOrdersData();
     }
     else {
       console.log("User is not logged in");

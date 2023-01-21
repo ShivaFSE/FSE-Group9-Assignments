@@ -1,8 +1,9 @@
 import React from 'react';
-import { isUserLoggedIn, getUser, getAppDomain } from './Common';
+import { isUserLoggedIn, getUser, getAppDomain, isRestaurantOwnerLogin } from './Common';
 import { withRouter } from "react-router-dom";
 import './Restaurants.css';
 import RestaurantTile from './RestaurantTile';
+import axios from 'axios';
 
 class Restaurants extends React.Component {
   constructor(props) {
@@ -27,7 +28,7 @@ class Restaurants extends React.Component {
 
   addNewRestaurant = (event) => {
     const user = getUser();
-    if (user.role === JSON.stringify("restaurant_owner")) {
+    if (isRestaurantOwnerLogin()) {
       var owner_id = user.id;
       console.log("restaurant_owner user: " + owner_id);
       this.props.history.push({
@@ -40,10 +41,10 @@ class Restaurants extends React.Component {
     }
   }
 
-  searchRestaurants = (event) => {
+  searchRestaurants = async (event) => {
     let keyword = event.target.value;
     console.log("in searchRestaurants: " + keyword);
-    this.fetchRestaurantsData(keyword);
+    await this.fetchRestaurantsData(keyword);
   }
 
   addRestaurantTiles() {
@@ -57,8 +58,7 @@ class Restaurants extends React.Component {
   }
 
   addNewRestaurantButton() {
-    const user = getUser();
-    if (user.role === JSON.stringify("restaurant_owner")) {
+    if (isRestaurantOwnerLogin()) {
       return (
       <div className='user-menu'>
         <input type="button" onClick={this.addNewRestaurant} value="Add a Restaurant" />
@@ -69,7 +69,6 @@ class Restaurants extends React.Component {
   }
 
   render() {
-    console.log("In");
     if(!isUserLoggedIn()) {
       return (
         <div className="dashboard-container">
@@ -92,19 +91,18 @@ class Restaurants extends React.Component {
     );
   }
 
-  fetchRestaurantsData(location) {
-    
+  async fetchRestaurantsData(location) {
     console.log("delivery destination: " + location);
     
     // Revert back to correct api method when Backend is built
     //var apiBaseUrl = "http://localhost:8000/api/core/restaurants"
-    var apiBaseUrl = getAppDomain() + "/restaurants?"
+    var apiBaseUrl = getAppDomain() + "/restaurants"
     if (location !== "") {
-      apiBaseUrl = apiBaseUrl + "Address=" + location;
+      apiBaseUrl = apiBaseUrl + "?Address=" + location;
     }
 
     const user = getUser();
-    if (user.role === JSON.stringify("restaurant_owner")) {
+    if (isRestaurantOwnerLogin()) {
       var restaurant_owner_id = user.id;
       console.log("restaurant_owner user: " + restaurant_owner_id);
       apiBaseUrl = apiBaseUrl + "&restaurant_owner_id=" + restaurant_owner_id;
@@ -113,33 +111,28 @@ class Restaurants extends React.Component {
       console.log("customer user: " + user.role);
     }
 
-    fetch(apiBaseUrl)
-      .then((response) => {
-        return response.json();
-      })
-      .then(data => {
-        let restaurantsReceived = data.map((restaurant) => {
-          console.log("restaurant: " + restaurant["Name"], restaurant["Address"], restaurant["Timings"], restaurant["Description"]);
-          return {
-            "Name": restaurant["Name"],
-            "Logo": restaurant["Logo"],
-            "Address": restaurant["Address"],
-            "Timings": restaurant["Timings"],
-            "Description": restaurant["Description"],
-            "id": restaurant["id"]
-          }
-        });
-        this.setState({ restaurantData: restaurantsReceived });
-        console.log("restaurantsReceived: " + this.state.restaurantData.length);
-
-      }).catch(error => {
-        console.log(error);
+    let restaurantsReceivedData = await axios.get(apiBaseUrl);
+    console.log("restaurantsReceivedData status: ", restaurantsReceivedData.data.length);
+    if (restaurantsReceivedData.status === 200) {
+      let restaurantsReceived = restaurantsReceivedData.data.map((restaurant) => {
+        console.log("restaurant: " + restaurant["Name"], restaurant["Address"], restaurant["Timings"], restaurant["Description"]);
+        return {
+          "Name": restaurant["Name"],
+          "Logo": restaurant["Logo"],
+          "Address": restaurant["Address"],
+          "Timings": restaurant["Timings"],
+          "Description": restaurant["Description"],
+          "id": restaurant["id"]
+        }
       });
+      this.setState({ restaurantData: restaurantsReceived });
+      console.log("restaurantsReceived: " + this.state.restaurantData.length);
+    }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     if(isUserLoggedIn()) {
-      this.fetchRestaurantsData("");
+      await this.fetchRestaurantsData("");
     }
     else {
       console.log("User is not logged in");

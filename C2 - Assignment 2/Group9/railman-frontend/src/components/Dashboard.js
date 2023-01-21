@@ -1,8 +1,9 @@
 import React from 'react';
-import { isUserLoggedIn, getUser, removeUserSession, getAppDomain } from './Common';
+import { isUserLoggedIn, getUser, removeUserSession, getAppDomain, isCustomerLogin, isRestaurantOwnerLogin } from './Common';
 import { withRouter } from "react-router-dom";
 import OrdersTable from "./OrdersTable";
 import './Orders.css';
+import axios from 'axios';
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -55,7 +56,7 @@ class Dashboard extends React.Component {
 
         {(this.state.tableData.length > 0) ? this.addOrdersTable() : <h2 className='orders-heading'>No Active Orders!</h2>}
 
-        {user.role === JSON.stringify("customer") ? this.addOrderMenuBox() : null}
+        {isCustomerLogin() ? this.addOrderMenuBox() : null}
         
         <div className='user-menu'>
           <input type="button" onClick={this.handleLogout} value="Logout" />
@@ -64,19 +65,17 @@ class Dashboard extends React.Component {
     );
   }
 
-  fetchActiveOrdersData() {
+  async fetchActiveOrdersData() {
     const user = getUser();
 
     // Revert back to correct api method when Backend is built
     //var apiBaseUrl = "http://localhost:8000/api/core/orders?"
     var apiBaseUrl = getAppDomain() + "/orders?"
-    if (user.role === JSON.stringify("customer")) {
-      console.log("customer user");
+    if (isCustomerLogin()) {
       var customer_id = user.id;
       apiBaseUrl = apiBaseUrl + "customer_id=" + customer_id;
     }
-    else if (user.role === JSON.stringify("restaurant_owner")) {
-      console.log("restaurant_owner user");
+    else if (isRestaurantOwnerLogin()) {
       var restaurant_owner_id = user.id;
       apiBaseUrl = apiBaseUrl + "restaurant_owner_id=" + restaurant_owner_id;
     }
@@ -84,12 +83,10 @@ class Dashboard extends React.Component {
       console.log("incorrect user: " + user.role);
     }
 
-    fetch(apiBaseUrl)
-      .then((response) => {
-        return response.json();
-      })
-      .then(data => {
-        let allOrdersData = data
+    let allOrdersData = await axios.get(apiBaseUrl);
+    console.log("allOrdersData status: ", allOrdersData.status);
+    if (allOrdersData.status === 200) {
+      let allOrders = allOrdersData.data
         .filter(order => order["Order Status"] === "Pending")
         .map((order) => {
             return {
@@ -104,18 +101,15 @@ class Dashboard extends React.Component {
               "Delivered By": order["Delivered By"]
             }
         });
-        this.setState({ tableData: allOrdersData });
+        this.setState({ tableData: allOrders });
         console.log(this.state.tableData);
-
-      }).catch(error => {
-        console.log(error);
-      });
+    }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     if(isUserLoggedIn()) {
       console.log("User is " + getUser().name);
-      this.fetchActiveOrdersData();
+      await this.fetchActiveOrdersData();
     }
     else {
       console.log("User is not logged in");

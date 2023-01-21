@@ -32,7 +32,6 @@ export const setUserSession = (id, name, address, role) => {
 
 // get the status of user log in information
 export const isUserLoggedIn = () => {
-  console.log("isUserLoggedIn is " + sessionStorage.getItem('user'));
   if (sessionStorage.getItem('user') != null )
     return true;
   else
