@@ -17,7 +17,7 @@ class AddMenuItem extends React.Component {
       price: '',
       timings: '',
 
-      formErrors: { name: '', price: '', timings: '' },
+      formErrors: { name: ' is too short', price: ' is not valid', timings: ' are too short' },
       nameValid: false,
       priceValid: false,
       timingsValid: false,
@@ -44,11 +44,11 @@ class AddMenuItem extends React.Component {
         break;
       case 'price':
         priceValid = value.match(/^(\d*([.,](?=\d{3}))?\d+)+((?!\2)[.,]\d\d)?$/);
-        fieldValidationErrors.price = priceValid ? '' : 'is not valid';
+        fieldValidationErrors.price = priceValid ? '' : ' is not valid';
         break;
       case 'timings':
         timingsValid = value.length >= 1;
-        fieldValidationErrors.timings = timingsValid ? '' : 'is too short';
+        fieldValidationErrors.timings = timingsValid ? '' : 'are too short';
         break;
       default:
         break;
@@ -79,7 +79,7 @@ class AddMenuItem extends React.Component {
       () => { this.validateField(name, value) });
   }
 
-  handleSubmit = async (e) => {
+  handleSubmit = (e) => {
     console.log("handleSubmit restaurant_id: " + this.props.location.state?.restaurant_id);
     var apiBaseUrl = getAppDomain() + "/api/core/menu";
     var self = this;
@@ -94,22 +94,28 @@ class AddMenuItem extends React.Component {
       "restaurant_id": this.props.location.state?.restaurant_id
     }
     
-    let responseData = await axios.post(apiBaseUrl, payload)
-    console.log("responseData Status: " + responseData.status);
-    if (responseData.status === 201) {
-      alert("Menu Item successfull added");
-      console.log("Adding Menu Item successfull");
-      self.props.history.push('/Restaurants');
-    }
-    else if (responseData.status === 204) {
-      console.log("invalid menu item data");
-      alert("invalid menu item data")
-    }
-    else {
-      console.log("User exists");
-      alert("User exist");
-    }
-    
+    axios.post(apiBaseUrl, payload)
+      .then(function (response) {
+        console.log(response);
+        if (response.status === 201) {
+          alert("Menu Item successfull added");
+          console.log("Adding Menu Item successfull");
+          self.props.history.push('/Restaurants');
+        }
+        else if (response.status === 204) {
+          console.log("invalid menu item data");
+          alert("invalid menu item data")
+        }
+        else {
+          console.log("User exists");
+          alert("User exist");
+        }
+      })
+      .catch(function (error) {
+        console.log("")
+        console.log(error);
+      });
+
     e.preventDefault();
   }
 

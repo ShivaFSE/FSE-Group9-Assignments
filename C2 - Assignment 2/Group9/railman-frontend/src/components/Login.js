@@ -13,7 +13,7 @@ class Login extends React.Component {
       email: '',
       password: '',
       UserType: '',
-      formErrors: { email: '', password: '', userType: ' choose user type' },
+      formErrors: { email: '', password: '', userType: ' is not selected' },
       emailValid: false,
       passwordValid: false,
       userTypeValid: false,

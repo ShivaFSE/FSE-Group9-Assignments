@@ -18,7 +18,7 @@ class AddRestaurant extends React.Component {
       timings: '',
       description: '',
 
-      formErrors: { name: '', address: '', timings: '' },
+      formErrors: { name: ' is too short', address: ' is too short', timings: ' are too short' },
       nameValid: false,
       addressValid: false,
       timingsValid: false,
@@ -49,7 +49,7 @@ class AddRestaurant extends React.Component {
         break;
       case 'timings':
         timingsValid = value.length >= 1;
-        fieldValidationErrors.timings = timingsValid ? '' : 'is too short';
+        fieldValidationErrors.timings = timingsValid ? '' : 'are too short';
         break;
       default:
         break;
@@ -80,7 +80,7 @@ class AddRestaurant extends React.Component {
       () => { this.validateField(name, value) });
   }
 
-  handleSubmit = async (e) => {
+  handleSubmit = (e) => {
     console.log("handleSubmit restaurant_owner_id: " + this.props.location.state?.restaurant_owner_id);
     var apiBaseUrl = getAppDomain() + "/api/core/restaurants";
     var self = this;
@@ -93,21 +93,27 @@ class AddRestaurant extends React.Component {
       "restaurant_owner_id": this.props.location.state?.restaurant_owner_id,
     }
     
-    let responseData = await axios.post(apiBaseUrl, payload)
-    console.log("responseData Status: ", responseData.status);
-    if (responseData.status === 201) {
-      alert("Restaurant successfull added");
-      console.log("Adding Restaurant successfull");
-      self.props.history.push('/Restaurants');
-    }
-    else if (responseData.status === 204) {
-      console.log("invalid restaurant data");
-      alert("invalid restaurant data")
-    }
-    else {
-      console.log("User exists");
-      alert("User exist");
-    }
+    axios.post(apiBaseUrl, payload)
+      .then(function (response) {
+        console.log(response);
+        if (response.status === 201) {
+          alert("Restaurant successfull added");
+          console.log("Adding Restaurant successfull");
+          self.props.history.push('/Restaurants');
+        }
+        else if (response.status === 204) {
+          console.log("invalid restaurant data");
+          alert("invalid restaurant data")
+        }
+        else {
+          console.log("User exists");
+          alert("User exist");
+        }
+      })
+      .catch(function (error) {
+        console.log("")
+        console.log(error);
+      });
 
     e.preventDefault();
   }

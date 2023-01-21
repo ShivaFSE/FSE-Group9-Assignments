@@ -19,9 +19,12 @@ class Registration extends React.Component {
       role: 'customer',
       skills: [],
 
-      formErrors: { email: '', password: '', phonevalid: '' },
+      formErrors: { name: ' is too short', email: ' is too short', password: ' is too short', city: ' is too short', pincode: ' is invalid', phone: ' is too short' },
+      nameValid: false,
       emailValid: false,
       passwordValid: false,
+      cityValid: false,
+      pincodeValid: false,
       phonevalid: false,
       formValid: false,
     }
@@ -34,14 +37,24 @@ class Registration extends React.Component {
 
   validateField(fieldName, value) {
     let fieldValidationErrors = this.state.formErrors;
+    let nameValid = this.state.nameValid;
     let emailValid = this.state.emailValid;
     let passwordValid = this.state.passwordValid;
+    let cityValid = this.state.cityValid;
+    let pincodeValid = this.state.pincodeValid;
     let phonevalid = this.state.phonevalid;
+
     switch (fieldName) {
+      case 'name':
+        nameValid = value.length >= 1;
+        fieldValidationErrors.name = nameValid ? '' : ' is too short';
+        break;
+
       case 'email':
         emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,3})$/i);
         fieldValidationErrors.email = emailValid ? '' : ' is invalid';
         break;
+
       case 'password':
         console.log("password: ", value, ", reenter: ", this.state.reenter_password);
         if(value.length < 6) {
@@ -50,13 +63,14 @@ class Registration extends React.Component {
         }
         else if(this.state.reenter_password !== value) {
           passwordValid = false
-          fieldValidationErrors.password = ' passwords do not match';
+          fieldValidationErrors.password = ' does not match';
         }
         else {
           fieldValidationErrors.password = '';
           passwordValid = true
         }
         break;
+
       case 'reenter_password':
         console.log("password: ", this.state.password, ", reenter: ", value);
         if(value.length < 6) {
@@ -65,30 +79,47 @@ class Registration extends React.Component {
         }
         else if(this.state.password !== value) {
           passwordValid = false
-          fieldValidationErrors.password = ' passwords do not match';
+          fieldValidationErrors.password = ' does not match';
         }
         else {
           fieldValidationErrors.password = '';
           passwordValid = true
         }
         break;
+
+      case 'city':
+        cityValid = value.length >= 1;
+        fieldValidationErrors.city = cityValid ? '' : 'is invalid';
+        break;
+
+      case 'pincode':
+        pincodeValid = value.match(/^[0-9]{6}$/i);
+        fieldValidationErrors.pincode = pincodeValid ? '' : 'is invalid';
+        break;
+
       case 'phone':
         phonevalid = value.match(/^[0-9]{10}$/i);
-        fieldValidationErrors.phone = phonevalid ? '' : 'is not valid';
+        fieldValidationErrors.phone = phonevalid ? '' : 'is invalid';
         break;
+
       default:
         break;
     }
     this.setState({
       formErrors: fieldValidationErrors,
+      nameValid: nameValid,
       emailValid: emailValid,
       passwordValid: passwordValid,
+      cityValid: cityValid,
+      pincodeValid: pincodeValid,
       phonevalid: phonevalid
     }, this.validateForm);
   }
 
   validateForm() {
-    this.setState({ formValid: this.state.emailValid && this.state.passwordValid && this.state.phonevalid });
+    this.setState({ formValid: this.state.nameValid && this.state.emailValid && 
+      this.state.passwordValid && this.state.cityValid && 
+      this.state.pincodeValid && this.state.phonevalid });
   }
 
   errorClass(error) {
@@ -102,7 +133,7 @@ class Registration extends React.Component {
       () => { this.validateField(name, value) });
   }
 
-  handleSubmit = async (e) => {
+  handleSubmit = (e) => {
     console.log("in handleSubmit");
     var apiBaseUrl = getAppDomain() + "/api/authentication/";
     var self = this;
@@ -119,21 +150,27 @@ class Registration extends React.Component {
 
     console.log("user role: " + this.state.role);
 
-    let responseData = await axios.post(apiBaseUrl + 'registration', payload)
-    console.log("responseData Status: ", responseData.status);
-    if (responseData.status === 201) {
-      alert("Registration successfull.Login Again");
-      console.log("Registration successfull");
-      self.props.history.push('/');
-    }
-    else if (responseData.status === 204) {
-      console.log("invalid data");
-      alert("invalid data")
-    }
-    else {
-      console.log("User  exists");
-      alert("User  exist");
-    }
+    axios.post(apiBaseUrl + 'registration', payload)
+      .then(function (response) {
+        console.log(response);
+        if (response.status === 201) {
+          alert("Registration successfull");
+          console.log("Registration successfull");
+          self.props.history.push('/');
+        }
+        else if (response.status === 204) {
+          console.log("invalid data");
+          alert("invalid data")
+        }
+        else {
+          console.log("User  exists");
+          alert("User  exist");
+        }
+      })
+      .catch(function (error) {
+        console.log("")
+        console.log(error);
+      });
 
     e.preventDefault();
   }
@@ -234,7 +271,7 @@ class Registration extends React.Component {
 
               <input
                 type="text"
-                placeholder="Enter Phonenumber *"
+                placeholder="Enter Phone number *"
                 name="phone"
                 value={this.state.phone}
                 onChange={this.handleUserInput}
@@ -268,11 +305,10 @@ class Registration extends React.Component {
                 <label htmlFor="RestaurantOwner">Restaurant Owner</label>
               </div>
 
-
               <div>
                 <input
                   type="text"
-                  placeholder="Enter your name"
+                  placeholder="Enter your name *"
                   name="name"
                   value={this.state.name}
                   onChange={this.handleUserInput}
@@ -283,24 +319,36 @@ class Registration extends React.Component {
               <div>
                 <input
                   type="text"
-                  placeholder="Enter email "
+                  placeholder="Enter email *"
                   name="email"
                   value={this.state.email}
                   onChange={this.handleUserInput}
                   required
                 />
               </div>
-              <div>
 
+              <div>
                 <input
                   type="password"
-                  placeholder="Enter Password"
+                  placeholder="Enter Password *"
                   name="password"
                   value={this.state.password}
                   onChange={this.handleUserInput}
                   required
                 />
               </div>
+
+              <div>
+                <input
+                  type="password"
+                  placeholder="Re-enter Password *"
+                  name="reenter_password"
+                  value={this.state.reenter_password}
+                  onChange={this.handleUserInput}
+                  required
+                />
+              </div>
+
               <div>
                 <input
                   type="text"
@@ -308,38 +356,42 @@ class Registration extends React.Component {
                   name="address"
                   value={this.state.address}
                   onChange={this.handleUserInput}
-
                 />
               </div>
+
               <div>
                 <input
                   type="text"
-                  placeholder="Enter City"
+                  placeholder="Enter City *"
                   name="city"
                   value={this.state.city}
                   onChange={this.handleUserInput}
                   required
                 />
               </div>
+
               <div>
                 <input
                   type="text"
-                  placeholder="Enter Pincode"
+                  placeholder="Enter Pincode *"
                   name="pincode"
                   value={this.state.pincode}
                   onChange={this.handleUserInput}
+                  required
                 />
               </div>
+
               <div>
                 <input
                   type="text"
-                  placeholder="Enter Phonenumber"
+                  placeholder="Enter Phone number *"
                   name="phone"
                   value={this.state.phone}
                   onChange={this.handleUserInput}
                   required
                 />
               </div>
+
               <div>
                 <input
                   type="text"
