@@ -1,5 +1,5 @@
 import React from 'react';
-import { isUserLoggedIn, getAppDomain } from './Common';
+import { isUserLoggedIn, getAppDomain, isRestaurantOwnerLogin } from './Common';
 import { withRouter } from "react-router-dom";
 import axios from 'axios';
 import MenuTile from './MenuTile';
@@ -11,6 +11,7 @@ class OrderDetails extends React.Component {
 
     this.handleAcceptOrder = this.handleAcceptOrder.bind(this);
     this.handleRejectOrder = this.handleRejectOrder.bind(this);
+    this.handleCancelOrder = this.handleCancelOrder.bind(this);
 
     this.state = {
       orderData: {
@@ -63,6 +64,22 @@ class OrderDetails extends React.Component {
     e.preventDefault();
   }
 
+  handleCancelOrder = async (e) => {
+    console.log("handleCancelOrder id: " + this.state.orderData["id"]);
+    var apiBaseUrl = getAppDomain() + "/orders/" + this.state.orderData["id"];
+    var self = this;
+    var payload = self.state.orderData
+    payload["Order Status"] = "Canceled";
+    payload["Payment Status"] = "Refunded";
+    
+    let orderUpdatedData = await axios.put(apiBaseUrl, payload)
+    console.log("orderPatchData: ", orderUpdatedData.status);
+    if (orderUpdatedData.status === 200) {
+      window.location.reload(false);
+    }
+    e.preventDefault();
+  }
+
   addAcceptAndRejectButtons() {
     return (
       <div className='user-button-menu'>
@@ -70,6 +87,15 @@ class OrderDetails extends React.Component {
         <input type="button" onClick={this.handleAcceptOrder} value="Accept" /> : null }
         { (this.state.orderData["Order Status"] === "Pending" || this.state.orderData["Order Status"] === "Accepted") ? 
         <input type="button" onClick={this.handleRejectOrder} value="Reject" /> : null }
+      </div>
+    )
+  }
+
+  addCancelButton() {
+    return (
+      <div className='user-button-menu'>
+        { (this.state.orderData["Order Status"] === "Pending") ? 
+        <input type="button" onClick={this.handleCancelOrder} value="Cancel" /> : null }
       </div>
     )
   }
@@ -97,7 +123,7 @@ class OrderDetails extends React.Component {
     return (
       <div className="dashboard-container">
         <h2>Order Details</h2>
-        {this.addAcceptAndRejectButtons()}
+        { isRestaurantOwnerLogin() ? this.addAcceptAndRejectButtons() : this.addCancelButton()}
         <div className="order-details-container">
           <section className="menu section bd-container" id="menu">
             <div className="menu_details">

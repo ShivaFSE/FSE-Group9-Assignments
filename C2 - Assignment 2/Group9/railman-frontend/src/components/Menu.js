@@ -96,18 +96,18 @@ class Menu extends React.Component {
         }
       });
 
-      if (cartReceived.length > 0) {
+      if (cartReceived.length === 0) {
+        return true;
+      }
+      else if (cartReceived.length > 0) {
         console.log("cart restaurant_id: " + cartReceived[0].restaurant_id, ", new restaurant_id: ", newMenuItem.restaurant_id);
         if (cartReceived[0].restaurant_id === newMenuItem.restaurant_id) {
           return true;
         }
       }
     }
-    console.log("returning false");
-    if (allCartItems.length > 0) 
-      return false;
-    else 
-      return true;
+
+    return false;
   }
 
   addCartItem = (item) => {

@@ -104,6 +104,9 @@ class Orders extends React.Component {
             "Delivered By": order["Delivered By"]
           }
         });
+
+        allOrdersData.sort((a, b) => Date.parse(`${b["Ordered Date"]} ${b.Time}`) - Date.parse(`${a["Ordered Date"]} ${a.Time}`));
+
         this.setState({ tableData: allOrdersData });
         console.log(this.state.tableData);
 

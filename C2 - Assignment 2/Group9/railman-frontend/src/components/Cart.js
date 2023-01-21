@@ -143,7 +143,7 @@ class Cart extends React.Component {
     return (
       <div className="dashboard-container">
         <h2>Cart</h2>
-        {this.addPlaceOrderButton()}
+        {this.state.cartData.length > 0 ? this.addPlaceOrderButton() : null}
         <section className="menu section bd-container" id="cart">
           <div className="menu__container">
             {(this.state.cartData.length > 0) ? this.addCartTiles() : <h3>No Items in the Cart yet!</h3>}

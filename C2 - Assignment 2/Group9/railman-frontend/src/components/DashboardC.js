@@ -90,7 +90,7 @@ class DashboardC extends React.Component {
       })
       .then(data => {
         let allOrdersData = data
-        .filter(order => order["Order Status"] === "Active")
+        .filter(order => order["Order Status"] === "Pending")
         .map((order) => {
             return {
               "id": order["id"],
