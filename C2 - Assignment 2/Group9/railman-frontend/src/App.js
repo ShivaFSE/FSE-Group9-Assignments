@@ -46,7 +46,6 @@ class App extends React.Component {
               <Route path="/home" component={Home} />
               <Route path="/" exact component={() => <Login />} />
               <Route path="/registration" component={Registration} />
-              <Route path="/UnderDevelopment" component={UnderDevelopment} />
               <Route path="/Dashboard" exact component={() => <Dashboard />} />
               <Route path="/Orders" exact component={() => <Orders />} />
               <Route path="/Restaurants" exact component={() => <Restaurants />} />
@@ -55,6 +54,7 @@ class App extends React.Component {
               <Route path="/AddMenuItem" exact component={() => <AddMenuItem />} />
               <Route path="/Cart" exact component={() => <Cart />} />
               <Route path="/OrderDetails" exact component={() => <OrderDetails />} />
+              <Route path="/UnderDevelopment" component={UnderDevelopment} />
           </BrowserRouter>
         </div>
 

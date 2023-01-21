@@ -37,19 +37,23 @@ class AddMenuItem extends React.Component {
     let nameValid = this.state.nameValid;
     let priceValid = this.state.priceValid;
     let timingsValid = this.state.timingsValid;
+
     switch (fieldName) {
       case 'name':
         nameValid = value.length >= 1;
         fieldValidationErrors.name = nameValid ? '' : ' is too short';
         break;
+
       case 'price':
         priceValid = value.match(/^(\d*([.,](?=\d{3}))?\d+)+((?!\2)[.,]\d\d)?$/);
         fieldValidationErrors.price = priceValid ? '' : ' is not valid';
         break;
+
       case 'timings':
         timingsValid = value.length >= 1;
         fieldValidationErrors.timings = timingsValid ? '' : 'are too short';
         break;
+        
       default:
         break;
     }

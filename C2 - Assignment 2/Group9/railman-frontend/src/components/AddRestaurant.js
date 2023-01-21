@@ -38,19 +38,23 @@ class AddRestaurant extends React.Component {
     let nameValid = this.state.nameValid;
     let addressValid = this.state.addressValid;
     let timingsValid = this.state.timingsValid;
+
     switch (fieldName) {
       case 'name':
         nameValid = value.length >= 1;
         fieldValidationErrors.name = nameValid ? '' : ' is too short';
         break;
+
       case 'address':
         addressValid = value.length >= 1;
         fieldValidationErrors.address = addressValid ? '' : ' is too short';
         break;
+
       case 'timings':
         timingsValid = value.length >= 1;
         fieldValidationErrors.timings = timingsValid ? '' : 'are too short';
         break;
+        
       default:
         break;
     }

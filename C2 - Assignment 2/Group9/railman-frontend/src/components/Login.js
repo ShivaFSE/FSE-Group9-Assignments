@@ -53,10 +53,12 @@ class Login extends React.Component {
         emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,3})$/i);
         fieldValidationErrors.email = emailValid ? '' : ' is invalid';
         break;
+
       case 'password':
         passwordValid = value.length >= 6;
         fieldValidationErrors.password = passwordValid ? '' : ' is too short';
         break;
+
       default:
         break;
     }
@@ -99,16 +101,14 @@ class Login extends React.Component {
         self.setState({users:response.data});
         setUserSession(response.data[0].id, response.data[0].name, response.data[0].address, response.data[0].role);
         if (response.status === 200) {
-          console.log("Login successfull");
 
           console.log("In Login.successfull " + getUser().id + ", " + getUser().name + ", " + getUser().address);
           if (response.data[0].role === "customer") {
             self.props.history.push('/Dashboard');
           }
-          else
-            if (response.data[0].role === "restaurant_owner") {
-              self.props.history.push('/Dashboard');
-            }
+          else if (response.data[0].role === "restaurant_owner") {
+            self.props.history.push('/Dashboard');
+          }
         }
         else if (response.status === 204) {
           console.log("emailid and pwd  do not match");
