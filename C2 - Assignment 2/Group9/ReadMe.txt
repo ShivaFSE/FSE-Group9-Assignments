@@ -23,3 +23,5 @@ EPIC 2, User Story 2.2 Assumptions:
 
 
 
+
+For more details 
