@@ -1,0 +1,15 @@
+{
+  "name": "2022cfse002_rail_man_c4_2_users",
+  "version": "1.0.0",
+  "description": "2022cfse002_rail_man_c4_2_users",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "2022cfse002",
+  "license": "ISC",
+  "dependencies": {
+    "nedb": "^1.8.0",
+    "path": "^0.12.7"
+  }
+}
