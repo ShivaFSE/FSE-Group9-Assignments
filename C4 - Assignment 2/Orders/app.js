@@ -3,6 +3,7 @@ const app = express()
 const port = 3002
 const orders_db = require("./orders_db.js");
 const cart_db = require("./cart_db.js");
+const IP = require("ip");
 
 
 app.get('/', (req, res) => {
@@ -77,5 +78,6 @@ app.post('/api/core/orders', (req, res) => {
 })
 
 app.listen(port, () => {
-  console.log(`Orders app listening on port ${port}`)
+  const ipAddresses = IP.address();
+  console.log(`Orders app listening on port ${ipAddresses}:${port}`)
 })

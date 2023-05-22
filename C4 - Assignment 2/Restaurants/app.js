@@ -3,6 +3,7 @@ const app = express()
 const port = 3001
 const restaurants_db = require("./restaurants_db.js");
 const menu_db = require("./menu_db.js");
+const IP = require("ip");
 
 
 app.get('/', (req, res) => {
@@ -45,5 +46,6 @@ app.get('/api/core/menu', (req, res) => {
 })
 
 app.listen(port, () => {
-  console.log(`Restaurants app listening on port ${port}`)
+  const ipAddresses = IP.address();
+  console.log(`Restaurants app listening on port ${ipAddresses}:${port}`)
 })

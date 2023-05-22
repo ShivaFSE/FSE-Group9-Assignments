@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const port = 3000
 const users_db = require("./users_db.js");
+const IP = require("ip");
 
 
 app.get('/', (req, res) => {
@@ -40,5 +41,6 @@ app.post('/api/authentication/registration', (req, res) => {
 })
 
 app.listen(port, () => {
-  console.log(`Users app listening on port ${port}`)
+  const ipAddresses = IP.address();
+  console.log(`Users app listening on port ${ipAddresses}:${port}`)
 })

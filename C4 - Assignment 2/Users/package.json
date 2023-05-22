@@ -9,6 +9,7 @@
   "author": "2022cfse002",
   "license": "ISC",
   "dependencies": {
+    "ip": "^1.1.8",
     "nedb": "^1.8.0",
     "path": "^0.12.7"
   }
