@@ -1,2 +1,2 @@
-{"phone":"1234567890","role":"customer","pincode":"10","city":"NYC","email":"test@gmail.com","name":"test","address":"NYC","password":"shiva1","_id":"6TGkNee6z0ypdjG1"}
-{"name": "Owner","email": "o@g.com","password": "check1","phone": "1234567890","address": "Address","city": "City","role": "restaurant_owner","pincode": "000000","apiId": "authentication","_id": "tnBc2SzIVJ4gZ4uP"}
+{"phone":"1234567890","role":"customer","pincode":"10","city":"NYC","email":"shiva@gmail.com","name":"test","address":"NYC","password":"check1","_id":"6TGkNee6z0ypdjG1"}
+{"name":"Owner","email":"o@g.com","password":"check1","phone":"1234567890","address":"Address","city":"City","role":"restaurant_owner","pincode":"000000","apiId":"authentication","_id":"tnBc2SzIVJ4gZ4uP"}

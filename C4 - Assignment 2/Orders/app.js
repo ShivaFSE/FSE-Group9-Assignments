@@ -41,6 +41,17 @@ app.post('/api/core/cart', (req, res) => {
     });
 })
 
+app.delete('/api/core/cart', (req, res) => {
+  console.log(`delete: cart ${req.query.id}`);
+  cart_db.remove({ "_id": req.query.id }, function (err, newDoc) {
+      console.log(`app:remove error: ${err}`)
+      if (err == null) {
+        res.json({description:"Orders Service!"});
+      }
+    });
+})
+
+
 app.get('/api/core/orders', (req, res) => {
   console.log(`get orders: ${req.query.customer_id}`);
   orders_db.find({ customer_id: req.query.customer_id }, function (err, docs) {
