@@ -1,0 +1,122 @@
+
+In C4 course, I used the main web application(from C2 course), and created Docker Image called 2022cfse002_rail_man_c4_1. I will be using the same image for this assignment.
+
+
+Below are the assignment 2 details for C6
+
+
+Task 1: Create a custom docker image (application of your choice) and push the image to ECR (Amazon Elastic Container Registry).
+
+Below are the steps performed for Task 1
+1.a) As part of C4 I had already installed Docker Desktop on my Mac.
+
+1.b) I am going to use the Docker Image I created for C4 Assignment called, 2022cfse002_rail_man_c4_1. Optionally I can check for a container from this Image using below command, it will create a container named 2022cfse002_rail_man_c4_1_container.
+docker run -d --name 2022cfse002_rail_man_c4_1_container 2022cfse002_rail_man_c4_1 
+
+1.c) Now we need to create a free AWS Account, I used 2022CFSE002@wilp.bits-pilani.ac.in to create a free tier.
+
+1.d) To connect with this AWS account I need to install the AWS CLI first. AWS has a page for this
+    https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html#getting-started-install-instructions
+
+    curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
+    sudo installer -pkg AWSCLIV2.pkg -target /
+    aws --version
+
+With above commands AWS CLI is configured on the Mac.
+
+1.e) Now using below command I can try creating a repository in AWS ECR
+aws ecr create-repository --repository-name 2022cfse002_rail_man_c6_2
+Output:
+You must specify a region. You can also configure your region by running "aws configure".
+
+1.f) This error indicates we need to configure AWS for CLI usage. To do this we need to create a User first, then provide proper Permissions policies(AmazonEC2ContainerRegistryFullAccess) to it, and then generate Access Key, finally using below command we can setup AWS for CLI
+aws configure
+AWS Access Key ID [None]: AKIAR574IM7WPYBGDE4O
+AWS Secret Access Key [None]: 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
+Default region name [None]: us-east-2
+Default output format [None]: json
+
+1.g) Now we can run below command to login to AWS using CLI
+aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 133136148460.dkr.ecr.us-east-2.amazonaws.com
+
+1.h)As we are able to login into AWS, use below command again to create a repository in ECR
+aws ecr create-repository --repository-name 2022cfse002_rail_man_c6_2
+Output:
+    {
+        "repository": {
+            "repositoryArn": "arn:aws:ecr:us-east-2:133136148460:repository/2022cfse002_rail_man_c6_2",
+            "registryId": "133136148460",
+            "repositoryName": "2022cfse002_rail_man_c6_2",
+            "repositoryUri": "133136148460.dkr.ecr.us-east-2.amazonaws.com/2022cfse002_rail_man_c6_2",
+            "createdAt": "2023-08-05T13:16:33-04:00",
+            "imageTagMutability": "MUTABLE",
+            "imageScanningConfiguration": {
+                "scanOnPush": false
+            },
+            "encryptionConfiguration": {
+                "encryptionType": "AES256"
+            }
+        }
+    }
+
+1.i) Even though we created the repository there will not be any Images inside it. For that we need to Tag the local Docker image with the ECR repository we just created using below command
+docker tag 2022cfse002_rail_man_c4_1 133136148460.dkr.ecr.us-east-2.amazonaws.com/2022cfse002_rail_man_c6_2
+
+1.j) Finally we can push the local Docker image to ECR using below command. This command takes time based on the size of your image. Once succeeded, the image can be found by refreshing the repository in AWS.
+docker push 133136148460.dkr.ecr.us-east-2.amazonaws.com/2022cfse002_rail_man_c6_2
+Output:
+    latest: digest: sha256:343ab6956afa95602b3d1b9f3864504b7f1382db8d0b25586bf79ed266bd0eeb size: 3044
+
+
+With this step Task 1 completes.
+
+
+
+
+Task 2.a: Create an ECS cluster in AWS with minimum one node. Access the ECR image (created in step 1) and demonstrate the running of the application from within the ECS cluster. Create appropriate Task definition in ECS to run the containerized application.
+
+2.a.a) For this we need to create a cluster in ECS first.
+    i) Search for ECS in AWS console
+    ii) Click on "Clusters" tab on the left pane
+    iii) Now we can start creating a new cluster
+    iv) Provide Name, and use FARGATE. There is no need to change any other details. It will take couple of mins to create cluster.
+
+2.a.b) Now we need to create a Task definition
+    i) Click on "Task Definitions" tab in the left pane
+    ii) Give a name to Task Definition Family, Container and then provide the image uri for the container.
+    iii) Once finished, we can Run the Task from there, or we can do it from Cluster.
+
+2.a.c) This will start the container from the image uri we provided.
+
+2.a.d) The task definition file can be found by navigating to Task definition in the AWS console. This step has been shown in the video. The downloaded json can be found at https://github.com/ShivaFSE/FSE-Group9-Assignments/tree/main/C6%20-%20Assignment%202/C6-Assignment-2-Task-revision1.json
+
+
+
+
+Task 3) Create a demo video explaining the entire assignment, and upload the video to Canvas portal.
+The demo video can be found at https://github.com/ShivaFSE/FSE-Group9-Assignments/tree/main/C6%20-%20Assignment%202/2022CFSE002%20C6%20Assignment%202%20Demo.mov
+
+
+
+
+As a last step, remove all the resources created for this assignment.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

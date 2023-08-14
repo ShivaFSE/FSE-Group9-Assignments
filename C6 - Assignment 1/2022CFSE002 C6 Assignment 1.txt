@@ -1,0 +1,286 @@
+
+I used the main web application(from C2 course) in C4 assignments. It had 3 Docker containers called Users, Restaurants and Orders.
+
+
+Below are the assignment 1 details for C6
+
+
+Task 1: Deploy the Microservices based application created for C4 into MiniKube [Any two services in the application]
+
+1. We need to run below commands to download minikube
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-darwin-amd64
+
+2. Run below command to install the downloaded file
+sudo install minikube-darwin-amd64 /usr/local/bin/minikube
+
+3. To install kubectl, run below commands in sequence
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/amd64/kubectl"
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/amd64/kubectl.sha256"
+echo "$(cat kubectl.sha256)  kubectl" | shasum -a 256 --check
+chmod +x ./kubectl
+sudo mv ./kubectl /usr/local/bin/kubectl
+sudo chown root: /usr/local/bin/kubectl
+kubectl version --client
+
+4. Now we can start the minikube with 
+minikube start
+
+5. We can optionally check the status
+minikube status
+Output:
+	minikube
+	type: Control Plane
+	host: Running
+	kubelet: Running
+	apiserver: Running
+	kubeconfig: Configured
+
+6. Check current deployments using
+kubectl get deployment
+Output:
+	NAME             READY   UP-TO-DATE   AVAILABLE   AGE
+	hello-minikube   1/1     1            1           6d2h
+
+7. Get list of docker images by running command
+minikube image ls --format table
+Output:
+	|---------------------------------------------|---------|---------------|--------|
+	|                    Image                    |   Tag   |   Image ID    |  Size  |
+	|---------------------------------------------|---------|---------------|--------|
+	| registry.k8s.io/coredns/coredns             | v1.9.3  | 5185b96f0becf | 48.8MB |
+	| docker.io/library/2022cfse002_rail_man_c4_1 | latest  | 7be146988fcfa | 990MB  |
+
+8. We can create a new deployemnt using existing docker image from below command
+kubectl create deployment mydocker-depl --image=2022cfse002_rail_man_c4_1
+
+9. Now the new deployment is created and running, run the following commadn to check
+kubectl get deployment
+Output:
+	NAME             READY   UP-TO-DATE   AVAILABLE   AGE
+	hello-minikube   1/1     1            1           6d3h
+	mydocker-depl    1/1     1            1           10s
+
+10. Now run the below command to delete the new deployment
+kubectl delete deployment mydocker-depl
+Output:
+	deployment.apps "mydocker-depl" deleted
+
+
+
+
+
+
+Task 2: Demonstrate the below commands
+a) Create cluster
+minikube provides a simple cluster with one node by default, hence starting a minikube itslef provides a defualt cluster
+
+Run below command to create a deployment in minikube
+kubectl create deployment mydocker-depl2 --image=2022cfse002_rail_man_c4_2
+Output:
+	deployment.apps/mydocker-depl2 created
+
+
+
+b) Check status of the cluster
+To check status of minikube
+minikube status
+Output:
+	minikube
+	type: Control Plane
+	host: Running
+	kubelet: Running
+	apiserver: Running
+	kubeconfig: Configured
+
+To check status of deployment
+kubectl get deployment
+Output:
+	NAME             READY   UP-TO-DATE   AVAILABLE   AGE
+	hello-minikube   1/1     1            1           6d3h
+	mydocker-depl2   1/1     1            1           10s
+
+
+
+c) Check minikube services
+Run below commands to get minikube services
+minikube service list
+Output:
+	|----------------------|---------------------------|--------------|-----|
+	|      NAMESPACE       |           NAME            | TARGET PORT  | URL |
+	|----------------------|---------------------------|--------------|-----|
+	| default              | kubernetes                | No node port |     |
+	| kube-system          | kube-dns                  | No node port |     |
+	| kubernetes-dashboard | dashboard-metrics-scraper | No node port |     |
+	| kubernetes-dashboard | kubernetes-dashboard      | No node port |     |
+	|----------------------|---------------------------|--------------|-----|
+
+
+
+d) Create pods for the microservices
+Deployment will create a single pod with default configuration
+
+kubectl get pod
+Output:
+	NAME                              READY   STATUS    RESTARTS   AGE
+	hello-minikube-77b6f68484-schvx   1/1     Running   0          6d3h
+	mydocker-depl2-25f6g45842-vdsch   1/1     Running   0          5m
+
+Now we can edit deployment by changing the replicaset to any desired number to create more pods
+kubectl edit deployment mydocker-depl2
+
+
+
+e) View the pods
+Run below command to get all the nodes
+kubectl get pod
+Output:
+	NAME                              READY   STATUS    RESTARTS   AGE
+	hello-minikube-77b6f68484-schvx   1/1     Running   0          6d3h
+	mydocker-depl2-25f6g45842-vdsch   1/1     Running   0          5m
+	mydocker-depl2-25f6g45842-adfds   1/1     Running   0          20s
+
+
+
+f) Delete the pods in the cluster
+Run the following command
+kubectl delete pod mydocker-depl2-25f6g45842-adfds
+Output:
+	pod "mydocker-depl2-25f6g45842-adfds" deleted
+
+kubectl get pod
+Output:
+	NAME                              READY   STATUS    RESTARTS   AGE
+	hello-minikube-77b6f68484-schvx   1/1     Running   0          6d3h
+	mydocker-depl2-25f6g45842-vdsch   1/1     Running   0          5m
+	mydocker-depl2-25f6g45842-sdfhd   1/1     Running   0          12s
+
+
+
+g) Describe the pods
+Run the following command
+kubectl describe pod mydocker-depl2-25f6g45842-sdfhd
+Output:
+	Name:             mydocker-depl2-25f6g45842-sdfhd
+	Namespace:        default
+	Priority:         0
+	Service Account:  default
+	Node:             minikube/192.168.49.2
+	Start Time:       Sun, 22 Jul 2023 17:54:23 -0400
+	Labels:           app=mydocker-depl2
+        	          pod-template-hash=77b6f68484
+	Annotations:      <none>
+	Status:           Running
+	IP:               10.244.0.3
+	IPs:
+	  IP:           10.244.0.3
+	Controlled By:  ReplicaSet/mydocker-depl2-25f6g45842
+	Containers:
+	  echo-server:
+	    Container ID:   docker://00f00a263ea2a872dc2d13853ddaf5d3228f6e8ebfb85e9bb816071e34217b1d
+	    Image:          kicbase/echo-server:1.0
+	    Image ID:       docker-pullable://kicbase/echo-server@sha256:127ac38a2bb9537b7f252addff209ea6801edcac8a92c8b1104dacd66a583ed6
+	    Port:           <none>
+	    Host Port:      <none>
+	    State:          Running
+	      Started:      Sun, 22 Jul 2023 17:54:25 -0400
+	    Ready:          True
+	    Restart Count:  0
+	    Environment:    <none>
+	    Mounts:
+	      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-nhv2p (ro)
+	Conditions:
+	  Type              Status
+	  Initialized       True 
+	  Ready             True 
+	  ContainersReady   True 
+	  PodScheduled      True 
+	Volumes:
+	  kube-api-access-nhv2p:
+	    Type:                    Projected (a volume that contains injected data from multiple sources)
+	    TokenExpirationSeconds:  3607
+	    ConfigMapName:           kube-root-ca.crt
+	    ConfigMapOptional:       <nil>
+	    DownwardAPI:             true
+	QoS Class:                   BestEffort
+	Node-Selectors:              <none>
+	Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+	                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+	Events:                      <none>
+
+
+
+h) Show minikube dashboard for deployments, pods, and replicasets
+kubectl describe deployment mydocker-depl2
+Output:
+	Name:                   mydocker-depl2
+	Namespace:              default
+	CreationTimestamp:      Sun, 22 Jul 2023 17:54:23 -0400
+	Labels:                 app=mydocker-depl2
+	Annotations:            deployment.kubernetes.io/revision: 1
+	Selector:               app=mydocker-depl2
+	Replicas:               1 desired | 1 updated | 1 total | 1 available | 0 unavailable
+	StrategyType:           RollingUpdate
+	MinReadySeconds:        0
+	RollingUpdateStrategy:  25% max unavailable, 25% max surge
+	Pod Template:
+	  Labels:  app=mydocker-depl2
+	  Containers:
+	   echo-server:
+	    Image:        kicbase/echo-server:1.0
+	    Port:         <none>
+	    Host Port:    <none>
+	    Environment:  <none>
+	    Mounts:       <none>
+	  Volumes:        <none>
+	Conditions:
+	  Type           Status  Reason
+	  ----           ------  ------
+	  Available      True    MinimumReplicasAvailable
+	  Progressing    True    NewReplicaSetAvailable
+	OldReplicaSets:  <none>
+	NewReplicaSet:   mydocker-depl2-25f6g45842 (1/1 replicas created)
+	Events:          <none>
+
+
+kubectl describe replicaset mydocker-depl2-25f6g45842
+Output:
+	Name:           mydocker-depl2-25f6g45842
+	Namespace:      default
+	Selector:       app=mydocker-depl2,pod-template-hash=25f6g45842
+	Labels:         app=mydocker-depl2
+	                pod-template-hash=25f6g45842
+	Annotations:    deployment.kubernetes.io/desired-replicas: 1
+	                deployment.kubernetes.io/max-replicas: 2
+	                deployment.kubernetes.io/revision: 1
+	Controlled By:  Deployment/mydocker-depl2
+	Replicas:       1 current / 1 desired
+	Pods Status:    1 Running / 0 Waiting / 0 Succeeded / 0 Failed
+	Pod Template:
+	  Labels:  app=mydocker-depl2
+	           pod-template-hash=25f6g45842
+	  Containers:
+	   echo-server:
+	    Image:        kicbase/echo-server:1.0
+	    Port:         <none>
+	    Host Port:    <none>
+	    Environment:  <none>
+	    Mounts:       <none>
+	  Volumes:        <none>
+	Events:           <none>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
