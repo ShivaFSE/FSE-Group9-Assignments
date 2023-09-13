@@ -1,0 +1,9 @@
+{
+  "/api/authentication/login": "/login",
+  "/api/authentication/registration": "/registration",
+  "/api/authentication/registration\\?email=:email&password=:password": "/registration?email=:email&password=:password",
+  "/api/core/incidents": "/incidents",
+  "/api/core/incidents/:id": "/incidents?id=:id",
+  "/api/core/incidents/:creatorId": "/incidents?creatorId=:creatorId",
+  "/api/core/incidents/:volunteers": "/incidents?volunteers=:volunteers"
+}

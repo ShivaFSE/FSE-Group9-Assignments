@@ -1,0 +1,97 @@
+{
+  "registration": [
+    {
+      "name": "Shiva",
+      "email": "c@g.com",
+      "password": "check1",
+      "phone": "1234567890",
+      "address": "Address",
+      "city": "City",
+      "role": "user",
+      "pincode": "000000",
+      "id": 1
+    },
+    {
+      "name": "Krishna",
+      "email": "c2@g.com",
+      "password": "check1",
+      "phone": "1234567890",
+      "address": "Delhi",
+      "city": "Delhi",
+      "role": "user",
+      "pincode": "498738",
+      "id": 2
+    }
+  ],
+  "incidents": [
+    {
+      "name": "Need help with recent flooding.",
+      "problemImageUrl": "image.jpg",
+      "type": "Weather Related",
+      "address": "Delhi",
+      "description": "Because of recent heavy rains the houses in the main place got flooded and need help with food and supplies.",
+      "directions": "Follow the news",
+      "numberOfPeopleNeeded": "25",
+      "completionTime": "12:34",
+      "completionDate": "2023-09-12",
+      "volunteers": [],
+      "status": "Active",
+      "creationDate": "2023-09-10",
+      "creatorId": "1",
+      "id": 4
+    },
+    {
+      "name": "Tee fell down",
+      "problemImageUrl": "image.jpg",
+      "type": "Open Area",
+      "address": "Mumbai",
+      "description": "The has fallen down becuase of an accident on the main road, and needs immediate attention.",
+      "directions": "Come straight from the bus station.",
+      "numberOfPeopleNeeded": "10",
+      "completionTime": "23:21",
+      "completionDate": "2023-09-13",
+      "volunteers": [],
+      "status": "Active",
+      "creationDate": "2023-09-10",
+      "creatorId": "2",
+      "id": 5
+    },
+    {
+      "name": "Need to educate kids",
+      "problemImageUrl": "image.jpg",
+      "type": "Teaching",
+      "address": "Hyderaad ",
+      "description": "Kids in Primary school needs some teaching in maths.",
+      "directions": "Close to Nampally station ",
+      "numberOfPeopleNeeded": "5",
+      "completionTime": "15:50",
+      "completionDate": "2023-09-20",
+      "volunteers": [
+        "2",
+        "3",
+        "4",
+        "1"
+      ],
+      "status": "Active",
+      "creationDate": "2023-09-10",
+      "creatorId": "1",
+      "id": 6
+    },
+    {
+      "name": "Road broken",
+      "problemImageUrl": "image.jpg",
+      "type": "Street",
+      "address": "Near railway station",
+      "description": "Road is broken because of an accident",
+      "directions": "Right turn from railway station",
+      "numberOfPeopleNeeded": "6",
+      "completionTime": "14:55",
+      "completionDate": "2023-09-13",
+      "volunteers": [],
+      "status": "Closed",
+      "creationDate": "2023-09-12",
+      "creatorId": "2",
+      "id": 7
+    }
+  ]
+}

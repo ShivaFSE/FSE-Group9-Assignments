@@ -1,0 +1,64 @@
+.dashboard-container
+{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;          
+    grid-template-rows: repeat(4, auto);          
+    grid-row-gap:0.5em;
+    margin: 0 auto;
+}
+.Greeting{
+    grid-column: 1 ;                           
+    grid-row:  1; 
+}
+.incidents-heading{
+    margin: 100px 0 0 0px;
+    grid-column: 2 ;
+    grid-row:  1;
+}
+.Incidents{
+    margin: 50px 0 0 0px;
+    grid-column: 1 ;                           
+    grid-row:  2; 
+}
+.incident-table{
+    margin: 10px 0 0 0px;
+}
+.search-container
+{
+    grid-column: 2 ;                           
+    grid-row:  1 /4; 
+    width:30%;
+    height:30%;
+    padding:20px;
+    margin: 20px 0 0 20px;   
+}
+.searchbox-container
+{
+    position: absolute;
+    margin: 75px 40px 0 20px; 
+    right: 0px;
+}
+.user-menu{
+    position: absolute;
+    margin: 20px 40px 0 20px; 
+    right: 0px;
+}
+.incidents-list {
+    padding-left: 1em;
+    padding-right: 3em;
+    margin-top: 2em;
+    width:200px;
+    display: flex;
+    flex-direction: column;
+}
+
+thead {color:green; background-color:blanchedalmond}
+tbody {color:blue; background-color:rgb(205, 228, 255)}
+tfoot {color:red; background-color:blanchedalmond}
+
+th, td {
+  border: 1px solid black;
+}
+td, th{
+  padding: 5px;
+}
