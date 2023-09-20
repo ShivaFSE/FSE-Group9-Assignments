@@ -1,0 +1,97 @@
+.container {
+  display: grid;
+  grid-template-rows: repeat(4, auto);          
+  grid-row-gap:0.5em;
+  margin: 0 auto;
+}
+
+.App-header {
+  grid-column:1 / 3 ;                           
+  grid-row:  1; 
+  min-height: 80px;
+  margin: 0; 
+  color: white;
+  text-align: center;
+  background-color:hsl(12, 8%, 48%);
+}
+
+.App-body {
+  grid-column: 2 / 3;
+  grid-row: 2 / 4;   
+  display: flex;
+  flex-direction: column;
+  align-items: space-between;
+  justify-content: left;
+     
+}
+.content {
+  background-color: #FFF;
+  padding: 10px;
+}
+
+ul.menu-header li {
+  display: inline;
+      
+}
+
+ul.menu-header li a {
+  color: #FFF;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 20px;
+  display: inline-block;
+}
+
+.menu-header {
+  display: flex;
+  flex-direction: row;
+  align-items: space-between;
+  justify-content: left;
+  background-color: #111;
+    
+    padding:10px;
+    margin:10px;
+}
+
+.App-footer {
+  grid-column: 1 /3;
+  min-height: 50px;
+  display: flex;
+  flex-direction: column;
+  color: rgb(14, 13, 13);
+  background-color:hsl(12, 8%, 48%);;
+}
+ 
+.site-nav {  
+  grid-column: 1;
+  grid-row: 2 / span 5; 
+  margin: 0;
+  padding: .5em;
+  background-color: hsl(16, 17%, 32%);    
+  border-radius: .2em; 
+  
+}
+.mainnav{
+  display: flex;     
+  flex-direction: column; 
+  justify-content: space-around; 
+  align-items: center;                         
+
+}
+ 
+.mainnav > li{
+  list-style-type: none;
+}
+
+.mainnav > li > a {
+  color: white;
+  text-decoration: none;    
+  display: block;
+  padding: 1em;
+  
+}
+
+.tile {
+  padding: 1.5em;
+  background-color: #fff;
+}
